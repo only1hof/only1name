@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09090f">
+  <title>ONLY1NAME</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="wordmark" href="./" aria-label="ONLY1NAME home"><span class="logo-mark">1</span> ONLY<span>1</span>NAME</a>
+    <div class="topbar-right">
+      <span class="live-dot"></span><span class="topbar-label">HOF'S COMMUNITY GAME</span>
+      <button id="sound-toggle" class="icon-button" aria-label="Toggle sound" title="Toggle sound">🔊</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section id="home-screen" class="screen home-screen">
+      <div class="eyebrow"><span class="eyebrow-line"></span> THE COMMUNITY GUESSING GAME <span class="eyebrow-line"></span></div>
+      <h1>ONLY<span>1</span>NAME</h1>
+      <p class="hero-subtitle">You know the community. <strong>Prove it.</strong></p>
+      <div class="hero-card">
+        <div class="hero-card-glow"></div>
+        <div class="hero-card-content">
+          <div class="mini-label">YOUR RUN</div>
+          <div class="hero-stats">
+            <div><strong id="home-guessed">0</strong><span>GUESSED</span></div>
+            <div class="stat-divider"></div>
+            <div><strong id="home-total">0</strong><span>PEOPLE</span></div>
+            <div class="stat-divider"></div>
+            <div><strong id="home-progress">0%</strong><span>COMPLETE</span></div>
+          </div>
+          <div class="progress-track"><div id="home-progress-bar" class="progress-fill"></div></div>
+          <div class="setting-heading">CHOOSE YOUR TIMER</div>
+          <div class="difficulty-options" role="group" aria-label="Choose timer difficulty">
+            <button class="difficulty" data-seconds="5"><span class="difficulty-time">05 <small>SEC</small></span><span class="difficulty-name">HARDCORE</span><span class="difficulty-desc">No time to think.</span></button>
+            <button class="difficulty selected" data-seconds="10"><span class="difficulty-time">10 <small>SEC</small></span><span class="difficulty-name">NORMAL</span><span class="difficulty-desc">The classic run.</span></button>
+            <button class="difficulty" data-seconds="15"><span class="difficulty-time">15 <small>SEC</small></span><span class="difficulty-name">EASY</span><span class="difficulty-desc">Take your time.</span></button>
+          </div>
+          <button id="start-button" class="primary-button">START GAME <span>→</span></button>
+          <button id="resume-button" class="secondary-button hidden">CONTINUE WHERE I LEFT OFF</button>
+          <p class="fine-print">Your progress is saved in this browser.</p>
+        </div>
+      </div>
+      <div class="home-footer"><span>ONE PHOTO.</span><span>ONE NAME.</span><span>NO EXCUSES.</span></div>
+    </section>
+
+    <section id="game-screen" class="screen game-screen hidden">
+      <div class="game-heading">
+        <button id="home-button" class="text-button">← MENU</button>
+        <div class="round-label">CONTESTANT <strong id="round-number">01</strong><span id="round-total"> / 20</span></div>
+        <div class="game-progress"><div id="game-progress-bar"></div></div>
+      </div>
+
+      <div class="game-layout">
+        <section class="contestant-panel">
+          <div class="photo-topline"><span class="tag">WHO'S THAT?</span><span id="guessed-badge" class="guessed-badge hidden">✓ GUESSED</span></div>
+          <div id="photo-frame" class="photo-frame">
+            <img id="contestant-photo" alt="Mystery contestant" draggable="false">
+            <div id="photo-fallback" class="photo-fallback"><span>?</span><small>CONTESTANT PHOTO</small></div>
+            <div id="reveal-overlay" class="reveal-overlay hidden"><span>THE ANSWER IS</span><strong id="reveal-name"></strong><small id="reveal-twitch"></small></div>
+            <div id="countdown-overlay" class="countdown-overlay hidden"><span id="countdown-number">3</span></div>
+          </div>
+          <div class="photo-caption"><span class="caption-dot"></span><span id="photo-caption-text">A member of Hof's community</span></div>
+        </section>
+
+        <aside class="controls-panel">
+          <div class="timer-card">
+            <div class="timer-top"><span>TIME LEFT</span><span id="timer-mode">NORMAL MODE</span></div>
+            <div id="timer-display" class="timer-display">10<span>s</span></div>
+            <div class="timer-track"><div id="timer-bar" class="timer-fill"></div></div>
+            <div class="timer-controls">
+              <button id="timer-start" class="small-button">▶ START TIMER</button>
+              <button id="timer-reset" class="small-button muted">↻ RESET</button>
+            </div>
+          </div>
+
+          <div class="guess-card">
+            <div class="section-kicker">LOCK IN YOUR GUESS</div>
+            <h2>What's their<br><span>first name?</span></h2>
+            <p>Say it out loud. Let chat decide.</p>
+            <button id="reveal-button" class="primary-button reveal-button">REVEAL NAME <span>↗</span></button>
+            <button id="guessed-button" class="secondary-button guessed-action">✓ MARK AS GUESSED</button>
+          </div>
+
+          <div class="navigation">
+            <button id="previous-button" class="nav-button">← PREVIOUS</button>
+            <button id="next-button" class="nav-button next-nav">NEXT PERSON →</button>
+          </div>
+          <div class="session-stats"><div><span>GUESSED THIS RUN</span><strong id="game-guessed">0</strong></div><div><span>LEFT TO GUESS</span><strong id="game-remaining">0</strong></div></div>
+          <button id="review-button" class="text-button review-button">REVIEW GUESSED PEOPLE ↓</button>
+        </aside>
+      </div>
+
+      <section id="review-panel" class="review-panel hidden">
+        <div class="review-heading"><div><span class="section-kicker">YOUR PROGRESS</span><h2>People you've guessed</h2></div><button id="close-review" class="text-button">CLOSE ✕</button></div>
+        <div id="review-list" class="review-list"></div>
+      </section>
+    </section>
+
+    <section id="empty-screen" class="screen empty-screen hidden">
+      <div class="empty-icon">＋</div><h2>YOUR GAME IS READY</h2>
+      <p>Add your contestants to <code>contestants.json</code> and their photos to the <code>photos/</code> folder in your repository.</p>
+      <button id="empty-home-button" class="primary-button">BACK TO MENU <span>→</span></button>
+    </section>
+  </main>
+  <footer class="site-footer"><span>ONLY1NAME</span><span>MADE FOR HOF'S COMMUNITY</span><span id="footer-count">0 CONTESTANTS</span></footer>
+  <script src="game.js"></script>
+</body>
+</html>

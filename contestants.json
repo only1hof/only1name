@@ -1,0 +1,107 @@
+[
+  {
+    "id": "contestant-001",
+    "name": "Isiah",
+    "photo": "photos/contestant-001.jpg"
+  },
+  {
+    "id": "contestant-002",
+    "name": "Emily",
+    "photo": "photos/contestant-002.jpg"
+  },
+  {
+    "id": "contestant-003",
+    "name": "Karan",
+    "photo": "photos/contestant-003.jpg"
+  },
+  {
+    "id": "contestant-004",
+    "name": "Peter",
+    "photo": "photos/contestant-004.jpg"
+  },
+  {
+    "id": "contestant-005",
+    "name": "Joe",
+    "photo": "photos/contestant-005.jpg"
+  },
+  {
+    "id": "contestant-006",
+    "name": "shane",
+    "photo": "photos/contestant-006.jpg"
+  },
+  {
+    "id": "contestant-007",
+    "name": "Kaus",
+    "photo": "photos/contestant-007.jpg"
+  },
+  {
+    "id": "contestant-008",
+    "name": "Eva",
+    "photo": "photos/contestant-008.png"
+  },
+  {
+    "id": "contestant-009",
+    "name": "Sabrina",
+    "photo": "photos/contestant-009.jpg"
+  },
+  {
+    "id": "contestant-010",
+    "name": "Jannik",
+    "photo": "photos/contestant-010.jpg"
+  },
+  {
+    "id": "contestant-011",
+    "name": "Levi",
+    "photo": "photos/contestant-011.jpg"
+  },
+  {
+    "id": "contestant-012",
+    "name": "Tim",
+    "photo": "photos/contestant-012.jpg"
+  },
+  {
+    "id": "contestant-013",
+    "name": "Lacey",
+    "photo": "photos/contestant-013.jpg"
+  },
+  {
+    "id": "contestant-014",
+    "name": "Jack",
+    "photo": "photos/contestant-014.jpg"
+  },
+  {
+    "id": "contestant-015",
+    "name": "Rose",
+    "photo": "photos/contestant-015.jpg"
+  },
+  {
+    "id": "contestant-016",
+    "name": "Peter",
+    "photo": "photos/contestant-016.jpg"
+  },
+  {
+    "id": "contestant-017",
+    "name": "Taio",
+    "photo": "photos/contestant-017.jpg"
+  },
+  {
+    "id": "contestant-018",
+    "name": "Yasir",
+    "photo": "photos/contestant-018.jpg"
+  },
+  {
+    "id": "contestant-019",
+    "name": "Berni",
+    "photo": "photos/contestant-019.jpg"
+  },
+  {
+    "id": "contestant-020",
+    "name": "Noa",
+    "photo": "photos/contestant-020.jpg"
+  },
+  {
+    "id": "contestant-021",
+    "name": "Maya",
+    "photo": "photos/contestant-021.png"
+  }
+]
