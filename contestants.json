@@ -103,5 +103,30 @@
     "id": "contestant-021",
     "name": "Taio",
     "photo": "photos/contestant-021.jpg"
+  },
+  {
+    "id": "contestant-022",
+    "name": "Thomas",
+    "photo": "photos/contestant-022.jpg"
+  },
+  {
+    "id": "contestant-023",
+    "name": "Patrick",
+    "photo": "photos/contestant-023.jpg"
+  },
+  {
+    "id": "contestant-024",
+    "name": "Mackenna",
+    "photo": "photos/contestant-024.jpg"
+  },
+  {
+    "id": "contestant-025",
+    "name": "Thomas",
+    "photo": "photos/contestant-025.jpg"
+  },
+  {
+    "id": "contestant-026",
+    "name": "Zac",
+    "photo": "photos/contestant-026.jpg"
   }
 ]
