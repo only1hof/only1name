@@ -1,13 +1,72 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "only1name-progress-v4";
-  const SETTINGS_KEY = "only1name-settings-v3";
+
+  /* ==========================================================
+     DEMO DATA
+     ========================================================== */
+
+  const contestants = [
+    {
+      id: "test-001",
+      name: "Brendan",
+      photo: "test-photos/test-001.PNG"
+    },
+    {
+      id: "test-002",
+      name: "Hof",
+      photo: "test-photos/test-002.PNG"
+    },
+    {
+      id: "test-003",
+      name: "Eric",
+      photo: "test-photos/test-003.PNG"
+    },
+    {
+      id: "test-004",
+      name: "Hofmann",
+      photo: "test-photos/test-004.PNG"
+    },
+    {
+      id: "test-005",
+      name: "I ate a lot of food",
+      photo: "test-photos/test-005.PNG"
+    },
+    {
+      id: "test-006",
+      name: "Jerry",
+      photo: "test-photos/test-006.PNG"
+    },
+    {
+      id: "test-007",
+      name: "Lil Huss",
+      photo: "test-photos/test-007.PNG"
+    },
+    {
+      id: "test-008",
+      name: "Brian",
+      photo: "test-photos/test-008.PNG"
+    }
+  ];
+
+
+  /* ==========================================================
+     SETTINGS
+     ========================================================== */
+
+  const STORAGE_KEY = "only1name-demo-progress-v1";
+  const SETTINGS_KEY = "only1name-demo-settings-v1";
 
   const GROUP_SIZE = 4;
   const ROUND_SECONDS = 10;
 
-  const $ = (id) => document.getElementById(id);
+
+  /* ==========================================================
+     ELEMENTS
+     ========================================================== */
+
+  const $ = (id) =>
+    document.getElementById(id);
 
 
   const screens = {
@@ -16,20 +75,16 @@
   };
 
 
-  let contestants = [];
+  /* ==========================================================
+     STATE
+     ========================================================== */
+
   let levels = [];
 
   let currentLevel = 0;
   let currentIndex = 0;
 
-
-  /*
-   * Only completed levels are remembered.
-   *
-   * There is intentionally NO per-person guessed state.
-   */
   let completedLevels = new Set();
-
 
   let timerRemaining = ROUND_SECONDS;
 
@@ -41,12 +96,13 @@
   let countdownRunning = false;
 
   let soundEnabled = true;
+
   let audioContext = null;
 
 
-  // ============================================================
-  // LOCAL STORAGE
-  // ============================================================
+  /* ==========================================================
+     STORAGE
+     ========================================================== */
 
   function safeRead(key, fallback) {
     try {
@@ -74,6 +130,7 @@
 
 
   function loadProgress() {
+
     const progress =
       safeRead(
         STORAGE_KEY,
@@ -88,7 +145,9 @@
         )
           ? progress.completedLevels.filter(
               (levelIndex) =>
-                Number.isInteger(levelIndex) &&
+                Number.isInteger(
+                  levelIndex
+                ) &&
                 levelIndex >= 0 &&
                 levelIndex < levels.length
             )
@@ -98,6 +157,7 @@
 
 
   function resetProgress() {
+
     stopAllTiming();
 
     completedLevels.clear();
@@ -115,17 +175,14 @@
   }
 
 
-  // ============================================================
-  // LEVELS
-  // ============================================================
+  /* ==========================================================
+     LEVELS
+     ========================================================== */
 
   function rebuildLevels() {
+
     levels = [];
 
-    /*
-     * contestants.json order is always used.
-     * There is no shuffle.
-     */
     for (
       let i = 0;
       i < contestants.length;
@@ -149,6 +206,7 @@
 
 
   function getCurrentContestant() {
+
     const level =
       getCurrentLevel();
 
@@ -167,10 +225,14 @@
   }
 
 
+  /* ==========================================================
+     HOME SCREEN
+     ========================================================== */
+
   function renderLevels() {
+
     const levelsGrid =
       $("levels-grid");
-
 
     levelsGrid.innerHTML = "";
 
@@ -190,7 +252,6 @@
 
         card.type = "button";
 
-
         card.className =
           `level-card ${
             completed
@@ -206,11 +267,7 @@
 
           ${
             completed
-              ? `
-                <span class="level-check">
-                  ✓
-                </span>
-              `
+              ? `<span class="level-check">✓</span>`
               : ""
           }
         `;
@@ -224,7 +281,9 @@
         );
 
 
-        levelsGrid.appendChild(card);
+        levelsGrid.appendChild(
+          card
+        );
       }
     );
 
@@ -234,9 +293,9 @@
 
 
   function updateHomeProgress() {
+
     const total =
       levels.length;
-
 
     const completed =
       completedLevels.size;
@@ -259,14 +318,16 @@
   }
 
 
-  // ============================================================
-  // SCREENS
-  // ============================================================
+  /* ==========================================================
+     SCREEN CONTROL
+     ========================================================== */
 
   function showScreen(name) {
+
     Object.entries(screens)
       .forEach(
         ([key, element]) => {
+
           element.classList.toggle(
             "hidden",
             key !== name
@@ -282,13 +343,12 @@
   }
 
 
-  // ============================================================
-  // START LEVEL
-  // ============================================================
+  /* ==========================================================
+     START LEVEL
+     ========================================================== */
 
-  function startLevel(
-    levelIndex
-  ) {
+  function startLevel(levelIndex) {
+
     if (!levels[levelIndex]) {
       return;
     }
@@ -300,14 +360,6 @@
     currentLevel =
       levelIndex;
 
-
-    /*
-     * A level always starts from
-     * its first picture.
-     *
-     * We do NOT resume a previous
-     * contestant position.
-     */
     currentIndex = 0;
 
 
@@ -321,19 +373,22 @@
   }
 
 
-  // ============================================================
-  // CONTESTANT RENDERING
-  // ============================================================
+  /* ==========================================================
+     CONTESTANT
+     ========================================================== */
 
   function renderContestant(
     hidePicture = false
   ) {
+
     const person =
       getCurrentContestant();
 
 
     if (!person) {
+
       showScreen("home");
+
       return;
     }
 
@@ -343,7 +398,6 @@
 
     const image =
       $("contestant-photo");
-
 
     const fallback =
       $("photo-fallback");
@@ -411,13 +465,6 @@
     }
 
 
-    /*
-     * Reset the answer every time
-     * a picture is opened.
-     *
-     * The person can therefore be
-     * guessed again.
-     */
     $("reveal-name")
       .textContent =
       person.name || "Unknown";
@@ -429,9 +476,6 @@
       );
 
 
-    /*
-     * Level / round information.
-     */
     $("level-number")
       .textContent =
       String(
@@ -467,19 +511,11 @@
       );
 
 
-    /*
-     * Previous is disabled only
-     * on the first picture.
-     */
     $("previous-button")
       .disabled =
       currentIndex === 0;
 
 
-    /*
-     * The last picture is the only
-     * place where Finish Level appears.
-     */
     $("next-button")
       .textContent =
       currentIndex ===
@@ -493,9 +529,9 @@
 
 
   function hidePictureElement() {
+
     const image =
       $("contestant-photo");
-
 
     const fallback =
       $("photo-fallback");
@@ -505,7 +541,6 @@
       "countdown-hidden"
     );
 
-
     fallback.classList.add(
       "hidden"
     );
@@ -513,9 +548,9 @@
 
 
   function showPictureElement() {
+
     const image =
       $("contestant-photo");
-
 
     const fallback =
       $("photo-fallback");
@@ -545,11 +580,12 @@
   }
 
 
-  // ============================================================
-  // ANSWER
-  // ============================================================
+  /* ==========================================================
+     ANSWER
+     ========================================================== */
 
   function revealAnswer() {
+
     const person =
       getCurrentContestant();
 
@@ -559,9 +595,6 @@
     }
 
 
-    /*
-     * Picture remains visible.
-     */
     showPictureElement();
 
 
@@ -577,11 +610,12 @@
   }
 
 
-  // ============================================================
-  // NAVIGATION
-  // ============================================================
+  /* ==========================================================
+     NAVIGATION
+     ========================================================== */
 
   function nextPerson() {
+
     const level =
       getCurrentLevel();
 
@@ -591,10 +625,6 @@
     }
 
 
-    /*
-     * If this is the last picture,
-     * NEXT becomes FINISH LEVEL.
-     */
     if (
       currentIndex ===
       level.length - 1
@@ -606,11 +636,6 @@
     }
 
 
-    /*
-     * Move directly to the next picture.
-     *
-     * There is no guessed state to remember.
-     */
     stopAllTiming();
 
 
@@ -620,15 +645,12 @@
     renderContestant(false);
 
 
-    /*
-     * Every time a picture is opened,
-     * its 10-second timer starts fresh.
-     */
     startRoundTimer();
   }
 
 
   function previousPerson() {
+
     if (currentIndex <= 0) {
       return;
     }
@@ -643,29 +665,13 @@
     renderContestant(false);
 
 
-    /*
-     * Previous also starts a completely
-     * fresh timer for that picture.
-     */
     startRoundTimer();
   }
 
 
   function finishLevel() {
-    /*
-     * The level is remembered ONLY here.
-     *
-     * Timer completion does not finish
-     * a level.
-     */
+
     stopAllTiming();
-
-
-    /*
-     * Reveal the final person's name
-     * before leaving the level.
-     */
-    revealAnswer();
 
 
     completedLevels.add(
@@ -683,11 +689,12 @@
   }
 
 
-  // ============================================================
-  // TIMER
-  // ============================================================
+  /* ==========================================================
+     TIMING
+     ========================================================== */
 
   function stopAllTiming() {
+
     sequenceId++;
 
 
@@ -695,6 +702,7 @@
 
 
     if (countdownInterval) {
+
       clearInterval(
         countdownInterval
       );
@@ -702,7 +710,6 @@
 
 
     countdownInterval = null;
-
 
     countdownRunning = false;
 
@@ -721,7 +728,9 @@
 
 
   function stopRoundTimerOnly() {
+
     if (timerInterval) {
+
       clearInterval(
         timerInterval
       );
@@ -733,15 +742,16 @@
 
 
   function resetTimerDisplay() {
+
     timerRemaining =
       ROUND_SECONDS;
-
 
     updateTimerDisplay();
   }
 
 
   function updateTimerDisplay() {
+
     $("timer-display")
       .textContent =
       timerRemaining;
@@ -777,11 +787,12 @@
   }
 
 
-  // ============================================================
-  // LEVEL START COUNTDOWN
-  // ============================================================
+  /* ==========================================================
+     START COUNTDOWN
+     ========================================================== */
 
   function startLevelCountdown() {
+
     stopAllTiming();
 
 
@@ -801,23 +812,17 @@
 
       countdownRunning = false;
 
-
       showPictureElement();
 
-
       startRoundTimer();
-
     });
   }
 
 
-  // ============================================================
-  // COUNTDOWN
-  // ============================================================
-
   function runCountdown(
     onComplete
   ) {
+
     const token =
       ++sequenceId;
 
@@ -877,7 +882,8 @@
             countdownInterval
           );
 
-          countdownInterval = null;
+          countdownInterval =
+            null;
 
           return;
         }
@@ -925,7 +931,8 @@
         );
 
 
-        countdownInterval = null;
+        countdownInterval =
+          null;
 
 
         $("countdown-overlay")
@@ -950,11 +957,12 @@
   }
 
 
-  // ============================================================
-  // ROUND TIMER
-  // ============================================================
+  /* ==========================================================
+     ROUND TIMER
+     ========================================================== */
 
   function startRoundTimer() {
+
     stopRoundTimerOnly();
 
 
@@ -998,11 +1006,6 @@
         updateTimerDisplay();
 
 
-        /*
-         * The final 3 seconds are
-         * part of the same 10-second
-         * timer.
-         */
         if (
           timerRemaining <= 3 &&
           timerRemaining > 0
@@ -1023,11 +1026,6 @@
         }
 
 
-        /*
-         * At zero, reveal the name.
-         *
-         * The level is NOT completed.
-         */
         if (
           timerRemaining <= 0
         ) {
@@ -1055,9 +1053,9 @@
   function showEndingCountdownNumber(
     number
   ) {
+
     const overlay =
       $("countdown-overlay");
-
 
     const countdownNumber =
       $("countdown-number");
@@ -1067,10 +1065,6 @@
       number;
 
 
-    /*
-     * Very transparent so the
-     * picture remains visible.
-     */
     overlay.classList.add(
       "ending-countdown"
     );
@@ -1094,6 +1088,7 @@
 
 
   function hideCountdownOverlay() {
+
     const overlay =
       $("countdown-overlay");
 
@@ -1109,15 +1104,16 @@
   }
 
 
-  // ============================================================
-  // SOUND
-  // ============================================================
+  /* ==========================================================
+     SOUND
+     ========================================================== */
 
   function beep(
     frequency = 660,
     duration = 0.11,
     volume = 0.045
   ) {
+
     if (!soundEnabled) {
       return;
     }
@@ -1136,6 +1132,7 @@
         audioContext.state ===
         "suspended"
       ) {
+
         audioContext.resume();
       }
 
@@ -1171,7 +1168,6 @@
 
       oscillator.connect(gain);
 
-
       gain.connect(
         audioContext.destination
       );
@@ -1185,17 +1181,16 @@
           duration
       );
 
-    } catch (_) {
-      // Audio is optional.
-    }
+    } catch (_) {}
   }
 
 
-  // ============================================================
-  // SETTINGS
-  // ============================================================
+  /* ==========================================================
+     SETTINGS
+     ========================================================== */
 
   function loadSettings() {
+
     const settings =
       safeRead(
         SETTINGS_KEY,
@@ -1216,6 +1211,7 @@
 
 
   function saveSettings() {
+
     localStorage.setItem(
       SETTINGS_KEY,
       JSON.stringify({
@@ -1225,69 +1221,9 @@
   }
 
 
-  // ============================================================
-  // LOAD CONTESTANTS
-  // ============================================================
-
-  async function loadContestants() {
-    try {
-
-      const response =
-        await fetch(
-          "contestants.json",
-          {
-            cache: "no-store"
-          }
-        );
-
-
-      if (!response.ok) {
-        throw new Error(
-          "Could not load contestants.json"
-        );
-      }
-
-
-      const data =
-        await response.json();
-
-
-      contestants =
-        Array.isArray(data)
-          ? data.filter(
-              (person) =>
-                person &&
-                person.id &&
-                person.name &&
-                person.photo
-            )
-          : [];
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      contestants = [];
-    }
-
-
-    rebuildLevels();
-
-
-    loadProgress();
-
-
-    renderLevels();
-
-
-    showScreen("home");
-  }
-
-
-  // ============================================================
-  // EVENT LISTENERS
-  // ============================================================
+  /* ==========================================================
+     EVENTS
+     ========================================================== */
 
   $("home-button")
     .addEventListener(
@@ -1324,7 +1260,7 @@
 
         const confirmed =
           window.confirm(
-            "Reset all level progress?"
+            "Reset all demo progress?"
           );
 
 
@@ -1361,10 +1297,6 @@
     );
 
 
-  // ============================================================
-  // KEYBOARD
-  // ============================================================
-
   document.addEventListener(
     "keydown",
     (event) => {
@@ -1388,27 +1320,37 @@
 
 
       if (
-        event.code === "ArrowRight"
+        event.code ===
+        "ArrowRight"
       ) {
+
         nextPerson();
       }
 
 
       if (
-        event.code === "ArrowLeft"
+        event.code ===
+        "ArrowLeft"
       ) {
+
         previousPerson();
       }
     }
   );
 
 
-  // ============================================================
-  // INITIALIZE
-  // ============================================================
+  /* ==========================================================
+     START
+     ========================================================== */
+
+  rebuildLevels();
+
+  loadProgress();
 
   loadSettings();
 
-  loadContestants();
+  renderLevels();
+
+  showScreen("home");
 
 })();
