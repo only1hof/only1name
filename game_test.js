@@ -58,7 +58,7 @@
   const SETTINGS_KEY = "only1name-demo-settings-v1";
 
   const GROUP_SIZE = 4;
-  const ROUND_SECONDS = 10;
+  const ROUND_SECONDS = 6;
 
 
   /* ==========================================================
