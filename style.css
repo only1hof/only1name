@@ -530,7 +530,7 @@ button:focus-visible {
 #countdown-number {
   color: var(--white);
 
-  font-size: clamp(110px, 22vw, 230px);
+  font-size: clamp(55px, 11vw, 115px);
 
   font-weight: 1000;
   line-height: 0.8;

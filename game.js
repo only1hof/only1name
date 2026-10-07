@@ -5,7 +5,7 @@
   const SETTINGS_KEY = "only1name-settings-v3";
 
   const GROUP_SIZE = 4;
-  const ROUND_SECONDS = 6;
+  const ROUND_SECONDS = 7;
 
   const $ = (id) => document.getElementById(id);
 
