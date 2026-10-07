@@ -176,57 +176,52 @@
   },
   {
     "id": "contestant-036",
-    "name": "Macy",
+    "name": "Aric",
     "photo": "photos/contestant-036.jpg"
   },
   {
     "id": "contestant-037",
-    "name": "Aric",
+    "name": "Zach",
     "photo": "photos/contestant-037.jpg"
   },
   {
     "id": "contestant-038",
-    "name": "Zach",
+    "name": "Jack",
     "photo": "photos/contestant-038.jpg"
   },
   {
     "id": "contestant-039",
-    "name": "Jack",
+    "name": "Gracelynn",
     "photo": "photos/contestant-039.jpg"
   },
   {
     "id": "contestant-040",
-    "name": "Gracelynn",
+    "name": "David",
     "photo": "photos/contestant-040.jpg"
   },
   {
     "id": "contestant-041",
-    "name": "David",
+    "name": "Brendan Hofmann",
     "photo": "photos/contestant-041.jpg"
   },
   {
     "id": "contestant-042",
-    "name": "Brendan Hofmann",
+    "name": "Adam",
     "photo": "photos/contestant-042.jpg"
   },
   {
     "id": "contestant-043",
-    "name": "Adam",
+    "name": "Billy",
     "photo": "photos/contestant-043.jpg"
   },
   {
     "id": "contestant-044",
-    "name": "Billy",
+    "name": "Kamryn",
     "photo": "photos/contestant-044.jpg"
   },
   {
     "id": "contestant-045",
-    "name": "Kamryn",
-    "photo": "photos/contestant-045.jpg"
-  },
-  {
-    "id": "contestant-046",
     "name": "George",
-    "photo": "photos/contestant-046.jpg"
+    "photo": "photos/contestant-045.jpg"
   }
 ]
