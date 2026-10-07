@@ -33,6 +33,12 @@ JPEG_QUALITY = 95
 register_heif_opener()
 
 
+def remove_non_jpeg_files(photos_dir: Path) -> None:
+    for path in photos_dir.iterdir():
+        if path.is_file() and path.suffix.lower() != ".jpg":
+            path.unlink()
+            print(f"Removed non-JPEG file: {path}")
+
 # --------------------------------------------------
 # Google Sheets
 # --------------------------------------------------
@@ -447,6 +453,8 @@ def main():
         f"\nCreated {JSON_PATH} with "
         f"{len(contestants)} verified contestants."
     )
+    
+    remove_non_jpeg_files(PHOTOS_DIR)
 
     if failures:
         print(
