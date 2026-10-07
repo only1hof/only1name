@@ -2,12 +2,12 @@
   {
     "id": "contestant-001",
     "name": "Eva",
-    "photo": "photos/contestant-001.png"
+    "photo": "photos/contestant-001.jpg"
   },
   {
     "id": "contestant-002",
     "name": "Maya",
-    "photo": "photos/contestant-002.png"
+    "photo": "photos/contestant-002.jpg"
   },
   {
     "id": "contestant-003",
@@ -162,7 +162,7 @@
   {
     "id": "contestant-033",
     "name": "Reece",
-    "photo": "photos/contestant-033.png"
+    "photo": "photos/contestant-033.jpg"
   },
   {
     "id": "contestant-034",
@@ -181,47 +181,57 @@
   },
   {
     "id": "contestant-037",
-    "name": "Zach",
+    "name": "Andreas",
     "photo": "photos/contestant-037.jpg"
   },
   {
     "id": "contestant-038",
-    "name": "Jack",
+    "name": "Zach",
     "photo": "photos/contestant-038.jpg"
   },
   {
     "id": "contestant-039",
-    "name": "Gracelynn",
+    "name": "Jack",
     "photo": "photos/contestant-039.jpg"
   },
   {
     "id": "contestant-040",
-    "name": "David",
+    "name": "Gracelynn",
     "photo": "photos/contestant-040.jpg"
   },
   {
     "id": "contestant-041",
-    "name": "Brendan Hofmann",
+    "name": "David",
     "photo": "photos/contestant-041.jpg"
   },
   {
     "id": "contestant-042",
-    "name": "Adam",
+    "name": "Brendan Hofmann",
     "photo": "photos/contestant-042.jpg"
   },
   {
     "id": "contestant-043",
-    "name": "Billy",
+    "name": "Adam",
     "photo": "photos/contestant-043.jpg"
   },
   {
     "id": "contestant-044",
-    "name": "Kamryn",
+    "name": "Billy",
     "photo": "photos/contestant-044.jpg"
   },
   {
     "id": "contestant-045",
-    "name": "George",
+    "name": "Kamryn",
     "photo": "photos/contestant-045.jpg"
+  },
+  {
+    "id": "contestant-046",
+    "name": "George",
+    "photo": "photos/contestant-046.jpg"
+  },
+  {
+    "id": "contestant-047",
+    "name": "Jannik",
+    "photo": "photos/contestant-047.jpg"
   }
 ]
