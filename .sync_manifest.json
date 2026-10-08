@@ -1,407 +1,326 @@
-[
-  {
-    "id": "contestant-001",
+{
+  "150hbUeM-t6PF_pBe11TCTJLjN75Yydch": {
     "name": "Eva",
     "photo": "photos/contestant-001.jpg"
   },
-  {
-    "id": "contestant-002",
+  "1Cg4jesWILgpPx6Z7uh5m4GVNF_wI0vYQ": {
     "name": "Maya",
     "photo": "photos/contestant-002.jpg"
   },
-  {
-    "id": "contestant-003",
+  "1l-83tTnpsqaM2wtbRoKkBUdBRa4rx3VV": {
     "name": "Yasir",
     "photo": "photos/contestant-003.jpg"
   },
-  {
-    "id": "contestant-004",
+  "1Utt1qXjL4eCwUTc97r2RZKhUwHiuzph4": {
     "name": "Peter",
     "photo": "photos/contestant-004.jpg"
   },
-  {
-    "id": "contestant-005",
+  "1bnoL9vAJESJAZMcKgSh9peT24or52tpZ": {
     "name": "Jannik",
     "photo": "photos/contestant-005.jpg"
   },
-  {
-    "id": "contestant-006",
+  "1YoNMS8v1BtDYLLTeB6LFsQdhk6Z-sYOL": {
     "name": "Sabrina",
     "photo": "photos/contestant-006.jpg"
   },
-  {
-    "id": "contestant-007",
+  "1h99RBHraMNE321ymCdsvF83kH4nsWm5h": {
     "name": "Jack",
     "photo": "photos/contestant-007.jpg"
   },
-  {
-    "id": "contestant-008",
+  "1LGRe-4DR5pTI0hWF5VvcPkGuYN94huCe": {
     "name": "Emily",
     "photo": "photos/contestant-008.jpg"
   },
-  {
-    "id": "contestant-009",
+  "1rJTEmbN_AbRzDOnBpZT85DBb6SldBMyX": {
     "name": "Joe",
     "photo": "photos/contestant-009.jpg"
   },
-  {
-    "id": "contestant-010",
+  "1x9n43Um66bLqrtBee4-Hq2ZP_PyCnQRl": {
     "name": "Kaus",
     "photo": "photos/contestant-010.jpg"
   },
-  {
-    "id": "contestant-011",
+  "1wroehHGMbs412fuRL_VTRDtYnfrD938t": {
     "name": "Lacey",
     "photo": "photos/contestant-011.jpg"
   },
-  {
-    "id": "contestant-012",
+  "1LzbxrdIDvQjuVnXOqdJsnvsiNGJdRdqn": {
     "name": "Peter",
     "photo": "photos/contestant-012.jpg"
   },
-  {
-    "id": "contestant-013",
+  "1PBdt13LAsh29gb6zDOUERlxNW270ftR0": {
     "name": "shane",
     "photo": "photos/contestant-013.jpg"
   },
-  {
-    "id": "contestant-014",
+  "1BnEttn6EA-93RJMxmalZjxrmroE-VBgw": {
     "name": "Noa",
     "photo": "photos/contestant-014.jpg"
   },
-  {
-    "id": "contestant-015",
+  "12wHxD8MLijO3toeuU5WeMYclFtr5wE1R": {
     "name": "Levi",
     "photo": "photos/contestant-015.jpg"
   },
-  {
-    "id": "contestant-016",
+  "1DYliejjhCJs3k-M15X4FKaAz0du6mSb5": {
     "name": "Berni",
     "photo": "photos/contestant-016.jpg"
   },
-  {
-    "id": "contestant-017",
+  "1j2-4k_D4p37ZwtaZCqZHpJV8C1zJFpc0": {
     "name": "Tim",
     "photo": "photos/contestant-017.jpg"
   },
-  {
-    "id": "contestant-018",
+  "1Sk5lRNYN3kutyELatekOs5DUAILFXgZs": {
     "name": "Rose",
     "photo": "photos/contestant-018.jpg"
   },
-  {
-    "id": "contestant-019",
+  "11GUqdprxkVnvPdU28v5yARBuuVIwenTf": {
     "name": "Isiah",
     "photo": "photos/contestant-019.jpg"
   },
-  {
-    "id": "contestant-020",
+  "1DdQFLSr1bWloq7FlSLyA_Ctn4tVVqm5v": {
     "name": "Karan",
     "photo": "photos/contestant-020.jpg"
   },
-  {
-    "id": "contestant-021",
+  "1-o7sFyg0wAI1PVX6Kogl3vrhLoE6nQK5": {
     "name": "Taio",
     "photo": "photos/contestant-021.jpg"
   },
-  {
-    "id": "contestant-022",
+  "1ye2-k-6QolOV-cw1IBx1s1rdYtoTOVlV": {
     "name": "Thomas",
     "photo": "photos/contestant-022.jpg"
   },
-  {
-    "id": "contestant-023",
+  "1NMamPGj-u_yP2EMXNK0y9jTuj5lEYvGB": {
     "name": "Patrick",
     "photo": "photos/contestant-023.jpg"
   },
-  {
-    "id": "contestant-024",
+  "1S4EBWvbb-_l0j9DC8ny0gcKtWwmng0Jp": {
     "name": "Mackenna",
     "photo": "photos/contestant-024.jpg"
   },
-  {
-    "id": "contestant-025",
+  "1D5uOXSB9jn5SpwOWIohAyCb8B0TQDINi": {
     "name": "Thomas",
     "photo": "photos/contestant-025.jpg"
   },
-  {
-    "id": "contestant-026",
+  "1hhrUoMufPuhBMBrtR_Dp8SQ9vZeaUon0": {
     "name": "Zac",
     "photo": "photos/contestant-026.jpg"
   },
-  {
-    "id": "contestant-027",
+  "1trQAA8H7X-AmNROxuHUwLMjMT9JJMX-V": {
     "name": "Brendan",
     "photo": "photos/contestant-027.jpg"
   },
-  {
-    "id": "contestant-028",
+  "18lSCX5VPHWYNsp5T1UMCZUm-UpTxTVxq": {
     "name": "Jambo",
     "photo": "photos/contestant-028.jpg"
   },
-  {
-    "id": "contestant-029",
+  "1YFSSkIeKTN2iyviq9Mpl0vnLSnAy0heM": {
     "name": "Bennie",
     "photo": "photos/contestant-029.jpg"
   },
-  {
-    "id": "contestant-030",
+  "1b559UQ4i1xh6sp9QHlh3ct3dOVKeO2nL": {
     "name": "Yasemin",
     "photo": "photos/contestant-030.jpg"
   },
-  {
-    "id": "contestant-031",
+  "1MY1XbI0dZ2f7udsc3BKJ9RfGX2jtQdBf": {
     "name": "Reed",
     "photo": "photos/contestant-031.jpg"
   },
-  {
-    "id": "contestant-032",
+  "1E0fVk002MayuYJhA_wiLh4tQHBaJ-Oem": {
     "name": "Xavier",
     "photo": "photos/contestant-032.jpg"
   },
-  {
-    "id": "contestant-033",
+  "1P8PYWaRp2b3PoumIFeh1zil_aUHyvlJn": {
     "name": "Reece",
     "photo": "photos/contestant-033.jpg"
   },
-  {
-    "id": "contestant-034",
+  "1_xPcDPUNVqmMRRh9vf9gjM9bkLIvOw1r": {
     "name": "Tori",
     "photo": "photos/contestant-034.jpg"
   },
-  {
-    "id": "contestant-035",
+  "1PG0uZcvECLgkgNc3XKq2lLXfXzmA0jef": {
     "name": "Macy",
     "photo": "photos/contestant-035.jpg"
   },
-  {
-    "id": "contestant-036",
+  "13g8cfVnsDtT3vzAxKNkL9-HTaunkkRdI": {
     "name": "Aric",
     "photo": "photos/contestant-036.jpg"
   },
-  {
-    "id": "contestant-037",
+  "1BhC1deMvouDxaJhchbg-E6NwB3ZGt6rZ": {
     "name": "Andreas",
     "photo": "photos/contestant-037.jpg"
   },
-  {
-    "id": "contestant-038",
+  "1_0L1MfdZdvWqNbE2uQSAgZy2gEmW87d9": {
     "name": "Zach",
     "photo": "photos/contestant-038.jpg"
   },
-  {
-    "id": "contestant-039",
+  "1caxvGYA9coahlZdprjCObuMlOW4exRC2": {
     "name": "Jack",
     "photo": "photos/contestant-039.jpg"
   },
-  {
-    "id": "contestant-040",
+  "1vYWiP1CT_hU0tBT1_4C7fXCOl2I-MitC": {
     "name": "Gracelynn",
     "photo": "photos/contestant-040.jpg"
   },
-  {
-    "id": "contestant-041",
+  "1DXeEp1kskR6FLTJszXXBM1KlQDW4913f": {
     "name": "David",
     "photo": "photos/contestant-041.jpg"
   },
-  {
-    "id": "contestant-042",
+  "1OupTgO5TLuy76YOrA435izJ3okj-dzRw": {
     "name": "Adam",
     "photo": "photos/contestant-042.jpg"
   },
-  {
-    "id": "contestant-043",
+  "1zNmPn4x1i9yQItBy9mhOqsBtZqjOsGpY": {
     "name": "Billy",
     "photo": "photos/contestant-043.jpg"
   },
-  {
-    "id": "contestant-044",
+  "13zBVPoBF3IJWqAe3RBvpRmGo2wVvD1PY": {
     "name": "Kamryn",
     "photo": "photos/contestant-044.jpg"
   },
-  {
-    "id": "contestant-045",
+  "1d0TF0O6B3qU2lPeIPqVqAItzjPAUxYaW": {
     "name": "George",
     "photo": "photos/contestant-045.jpg"
   },
-  {
-    "id": "contestant-046",
+  "1htkPE28ejJuQWy16MBRUlFS03irI0jHs": {
     "name": "Jannik",
     "photo": "photos/contestant-046.jpg"
   },
-  {
-    "id": "contestant-047",
+  "1a_yntTWOCuX1k-4Tldgeeu5QjshvUf71": {
     "name": "Mia",
     "photo": "photos/contestant-047.jpg"
   },
-  {
-    "id": "contestant-048",
+  "1HN8VBNnDTItLZAUdi-Mr6nMYTfKLZiBl": {
     "name": "Francesca",
     "photo": "photos/contestant-048.jpg"
   },
-  {
-    "id": "contestant-049",
+  "1g9IZCh_ZojMeKnsG9v4WGc_4S0rsNVXI": {
     "name": "Kyra",
     "photo": "photos/contestant-049.jpg"
   },
-  {
-    "id": "contestant-050",
+  "1jHRVVeionA__WF5psWG_6rruMLOXHDGS": {
     "name": "Max",
     "photo": "photos/contestant-050.jpg"
   },
-  {
-    "id": "contestant-051",
+  "1GIbCT9yHjrpWOVBGCwd0PDvzYNv0FQ-p": {
     "name": "alarna",
     "photo": "photos/contestant-051.jpg"
   },
-  {
-    "id": "contestant-052",
+  "1DfaNY2-WfMELV4Pi_6ak6Ujx2nDeUCRo": {
     "name": "abraham",
     "photo": "photos/contestant-052.jpg"
   },
-  {
-    "id": "contestant-053",
+  "1WE3saCzAgdlkIpBgsg5LMKwuW1osaTv_": {
     "name": "Jay",
     "photo": "photos/contestant-053.jpg"
   },
-  {
-    "id": "contestant-054",
+  "12XNFGttv0BmM39pUxb5ZdR4qn6ijZiy-": {
     "name": "Jude",
     "photo": "photos/contestant-054.jpg"
   },
-  {
-    "id": "contestant-055",
+  "1YaEDJkEkn00WaWY3eYCoTfoZzeTLvknS": {
     "name": "Dylan",
     "photo": "photos/contestant-055.jpg"
   },
-  {
-    "id": "contestant-056",
+  "1wWSORUxfON79WcLiRZpMrvzqEsP2k97r": {
     "name": "Henry",
     "photo": "photos/contestant-056.jpg"
   },
-  {
-    "id": "contestant-057",
+  "1Xh4KgV9RQYFg0ldfZHcA0bTkYN8-U6zQ": {
     "name": "Jambo",
     "photo": "photos/contestant-057.jpg"
   },
-  {
-    "id": "contestant-058",
+  "1lPIzRkT1-U9Q1UgDk7IO4-UkXFg9tnay": {
     "name": "Max",
     "photo": "photos/contestant-058.jpg"
   },
-  {
-    "id": "contestant-059",
+  "1P88Dz3WpYwHepnqhbxsm1k9DK1UVXY6T": {
     "name": "Gavin",
     "photo": "photos/drive-1P88Dz3WpYwHepnqhbxsm1k9DK1UVXY6T.jpg"
   },
-  {
-    "id": "contestant-060",
+  "1lw4VQRNcVhQPw2_TPptf1XvkZWa0Gu0q": {
     "name": "Jack",
     "photo": "photos/contestant-059.jpg"
   },
-  {
-    "id": "contestant-061",
+  "1oEzgrnLF-YSFtSFsedRdQMNklx1VqbOM": {
     "name": "Sulia",
     "photo": "photos/contestant-060.jpg"
   },
-  {
-    "id": "contestant-062",
+  "12l7f0WwzRXHv2pW8GryHM9YhQ9f-BKMX": {
     "name": "Jose",
     "photo": "photos/contestant-061.jpg"
   },
-  {
-    "id": "contestant-063",
+  "1G-nWZNS0hU66tM5ddmGGAcNEa0Q5Y2GJ": {
     "name": "Chris",
     "photo": "photos/contestant-062.jpg"
   },
-  {
-    "id": "contestant-064",
+  "17VoojADPrfBdsmQKiVDKwOZV-PDEQ7Gr": {
     "name": "Ryan",
     "photo": "photos/contestant-063.jpg"
   },
-  {
-    "id": "contestant-065",
+  "1LYdEDNXm715loAZwsm3fLCa7K-Lexzy4": {
     "name": "soraia",
     "photo": "photos/contestant-064.jpg"
   },
-  {
-    "id": "contestant-066",
+  "1nBr0GaPnmfIxU_7ThnXJtiPKUA-komGg": {
     "name": "Perry",
     "photo": "photos/contestant-065.jpg"
   },
-  {
-    "id": "contestant-067",
+  "1YCSKpYvS2_eAYP3MXvbPxAjG6izEu0DE": {
     "name": "Serenity",
     "photo": "photos/contestant-066.jpg"
   },
-  {
-    "id": "contestant-068",
+  "1K8EI3PNvKdLZuEm-v_khlgEJ83ctZW0Q": {
     "name": "Kevin",
     "photo": "photos/contestant-067.jpg"
   },
-  {
-    "id": "contestant-069",
+  "1lQOI8khGmFoWcT5wjnG0BTt6SNVQkZ-K": {
     "name": "Nalia",
     "photo": "photos/contestant-068.jpg"
   },
-  {
-    "id": "contestant-070",
+  "1KhkEycI4aBEUKLlyrpF_DCecY2UzSxsa": {
     "name": "Shania",
     "photo": "photos/drive-1KhkEycI4aBEUKLlyrpF_DCecY2UzSxsa.jpg"
   },
-  {
-    "id": "contestant-071",
+  "1ItLqUVE1pxmlRV7UGP0NuYZ6oxbLMDoJ": {
     "name": "Carter",
     "photo": "photos/drive-1ItLqUVE1pxmlRV7UGP0NuYZ6oxbLMDoJ.jpg"
   },
-  {
-    "id": "contestant-072",
+  "1AvXeVJwreyfqvOrQgjOvy5JoZu8j7VR-": {
     "name": "Kaydence",
     "photo": "photos/drive-1AvXeVJwreyfqvOrQgjOvy5JoZu8j7VR-.jpg"
   },
-  {
-    "id": "contestant-073",
+  "1X-lMvVXt-H9o506q0fZ3qlV_aQn0vCk1": {
     "name": "Gloom",
     "photo": "photos/drive-1X-lMvVXt-H9o506q0fZ3qlV_aQn0vCk1.jpg"
   },
-  {
-    "id": "contestant-074",
+  "1i24pwMyNTPygiOUfEUCdTOI3IB7JRyQr": {
     "name": "Marisol",
     "photo": "photos/drive-1i24pwMyNTPygiOUfEUCdTOI3IB7JRyQr.jpg"
   },
-  {
-    "id": "contestant-075",
+  "1kykUGDh65l3Csk-rau9tw31_xXAO4dnG": {
     "name": "Alex",
     "photo": "photos/drive-1kykUGDh65l3Csk-rau9tw31_xXAO4dnG.jpg"
   },
-  {
-    "id": "contestant-076",
+  "19-PM3lB4y0qpZxY2NJima1E0Jps8kiwE": {
     "name": "Hamza",
     "photo": "photos/drive-19-PM3lB4y0qpZxY2NJima1E0Jps8kiwE.jpg"
   },
-  {
-    "id": "contestant-077",
+  "1RlzfL84lDM7iU8J98rmp0uWJwfofRryp": {
     "name": "Stormi",
     "photo": "photos/drive-1RlzfL84lDM7iU8J98rmp0uWJwfofRryp.jpg"
   },
-  {
-    "id": "contestant-078",
+  "1pLUMImxJVLmwoT-TB1uMEa_mNROM57_o": {
     "name": "Abdullah",
     "photo": "photos/drive-1pLUMImxJVLmwoT-TB1uMEa_mNROM57_o.jpg"
   },
-  {
-    "id": "contestant-079",
+  "1_9uC1DPFOo139G_auSxQRI_c73S5meJM": {
     "name": "David",
     "photo": "photos/drive-1_9uC1DPFOo139G_auSxQRI_c73S5meJM.jpg"
   },
-  {
-    "id": "contestant-080",
+  "1XdOGSPJ61aTe1FoB-bDAKSvEfBiZx2QY": {
     "name": "Semaj",
     "photo": "photos/drive-1XdOGSPJ61aTe1FoB-bDAKSvEfBiZx2QY.jpg"
   },
-  {
-    "id": "contestant-081",
+  "17Rfl1lHVlWe4lyEx4i10iRQkkMg1PlCR": {
     "name": "Sarah",
     "photo": "photos/drive-17Rfl1lHVlWe4lyEx4i10iRQkkMg1PlCR.jpg"
   }
-]
+}
