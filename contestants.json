@@ -16,217 +16,347 @@
   },
   {
     "id": "contestant-004",
-    "name": "Peter",
+    "name": "Jannik",
     "photo": "photos/contestant-004.jpg"
   },
   {
     "id": "contestant-005",
-    "name": "Jannik",
+    "name": "Sabrina",
     "photo": "photos/contestant-005.jpg"
   },
   {
     "id": "contestant-006",
-    "name": "Sabrina",
+    "name": "Jack",
     "photo": "photos/contestant-006.jpg"
   },
   {
     "id": "contestant-007",
-    "name": "Jack",
+    "name": "Emily",
     "photo": "photos/contestant-007.jpg"
   },
   {
     "id": "contestant-008",
-    "name": "Emily",
+    "name": "Joe",
     "photo": "photos/contestant-008.jpg"
   },
   {
     "id": "contestant-009",
-    "name": "Joe",
+    "name": "Kaus",
     "photo": "photos/contestant-009.jpg"
   },
   {
     "id": "contestant-010",
-    "name": "Kaus",
+    "name": "Lacey",
     "photo": "photos/contestant-010.jpg"
   },
   {
     "id": "contestant-011",
-    "name": "Lacey",
+    "name": "Peter",
     "photo": "photos/contestant-011.jpg"
   },
   {
     "id": "contestant-012",
-    "name": "Peter",
+    "name": "shane",
     "photo": "photos/contestant-012.jpg"
   },
   {
     "id": "contestant-013",
-    "name": "shane",
+    "name": "Noa",
     "photo": "photos/contestant-013.jpg"
   },
   {
     "id": "contestant-014",
-    "name": "Noa",
+    "name": "Levi",
     "photo": "photos/contestant-014.jpg"
   },
   {
     "id": "contestant-015",
-    "name": "Levi",
+    "name": "Berni",
     "photo": "photos/contestant-015.jpg"
   },
   {
     "id": "contestant-016",
-    "name": "Berni",
+    "name": "Tim",
     "photo": "photos/contestant-016.jpg"
   },
   {
     "id": "contestant-017",
-    "name": "Tim",
+    "name": "Rose",
     "photo": "photos/contestant-017.jpg"
   },
   {
     "id": "contestant-018",
-    "name": "Rose",
+    "name": "Isiah",
     "photo": "photos/contestant-018.jpg"
   },
   {
     "id": "contestant-019",
-    "name": "Isiah",
+    "name": "Karan",
     "photo": "photos/contestant-019.jpg"
   },
   {
     "id": "contestant-020",
-    "name": "Karan",
+    "name": "Taio",
     "photo": "photos/contestant-020.jpg"
   },
   {
     "id": "contestant-021",
-    "name": "Taio",
+    "name": "Thomas",
     "photo": "photos/contestant-021.jpg"
   },
   {
     "id": "contestant-022",
-    "name": "Thomas",
+    "name": "Patrick",
     "photo": "photos/contestant-022.jpg"
   },
   {
     "id": "contestant-023",
-    "name": "Patrick",
+    "name": "Mackenna",
     "photo": "photos/contestant-023.jpg"
   },
   {
     "id": "contestant-024",
-    "name": "Mackenna",
+    "name": "Thomas",
     "photo": "photos/contestant-024.jpg"
   },
   {
     "id": "contestant-025",
-    "name": "Thomas",
+    "name": "Zac",
     "photo": "photos/contestant-025.jpg"
   },
   {
     "id": "contestant-026",
-    "name": "Zac",
+    "name": "Brendan",
     "photo": "photos/contestant-026.jpg"
   },
   {
     "id": "contestant-027",
-    "name": "Brendan",
+    "name": "Jambo",
     "photo": "photos/contestant-027.jpg"
   },
   {
     "id": "contestant-028",
-    "name": "Jambo",
+    "name": "Bennie",
     "photo": "photos/contestant-028.jpg"
   },
   {
     "id": "contestant-029",
-    "name": "Bennie",
+    "name": "Yasemin",
     "photo": "photos/contestant-029.jpg"
   },
   {
     "id": "contestant-030",
-    "name": "Yasemin",
+    "name": "Reed",
     "photo": "photos/contestant-030.jpg"
   },
   {
     "id": "contestant-031",
-    "name": "Reed",
+    "name": "Xavier",
     "photo": "photos/contestant-031.jpg"
   },
   {
     "id": "contestant-032",
-    "name": "Xavier",
+    "name": "Reece",
     "photo": "photos/contestant-032.jpg"
   },
   {
     "id": "contestant-033",
-    "name": "Reece",
+    "name": "Tori",
     "photo": "photos/contestant-033.jpg"
   },
   {
     "id": "contestant-034",
-    "name": "Tori",
+    "name": "Macy",
     "photo": "photos/contestant-034.jpg"
   },
   {
     "id": "contestant-035",
-    "name": "Macy",
+    "name": "Aric",
     "photo": "photos/contestant-035.jpg"
   },
   {
     "id": "contestant-036",
-    "name": "Aric",
+    "name": "Andreas",
     "photo": "photos/contestant-036.jpg"
   },
   {
     "id": "contestant-037",
-    "name": "Andreas",
+    "name": "Zach",
     "photo": "photos/contestant-037.jpg"
   },
   {
     "id": "contestant-038",
-    "name": "Zach",
+    "name": "Jack",
     "photo": "photos/contestant-038.jpg"
   },
   {
     "id": "contestant-039",
-    "name": "Jack",
+    "name": "Gracelynn",
     "photo": "photos/contestant-039.jpg"
   },
   {
     "id": "contestant-040",
-    "name": "Gracelynn",
+    "name": "David",
     "photo": "photos/contestant-040.jpg"
   },
   {
     "id": "contestant-041",
-    "name": "David",
+    "name": "Adam",
     "photo": "photos/contestant-041.jpg"
   },
   {
+    "id": "contestant-042",
+    "name": "Billy",
+    "photo": "photos/contestant-042.jpg"
+  },
+  {
     "id": "contestant-043",
-    "name": "Adam",
+    "name": "Kamryn",
     "photo": "photos/contestant-043.jpg"
   },
   {
     "id": "contestant-044",
-    "name": "Billy",
+    "name": "George",
     "photo": "photos/contestant-044.jpg"
   },
   {
     "id": "contestant-045",
-    "name": "Kamryn",
+    "name": "Jannik",
     "photo": "photos/contestant-045.jpg"
   },
   {
     "id": "contestant-046",
-    "name": "George",
+    "name": "Mia",
     "photo": "photos/contestant-046.jpg"
   },
   {
     "id": "contestant-047",
-    "name": "Jannik",
+    "name": "Francesca",
     "photo": "photos/contestant-047.jpg"
+  },
+  {
+    "id": "contestant-048",
+    "name": "Kyra",
+    "photo": "photos/contestant-048.jpg"
+  },
+  {
+    "id": "contestant-049",
+    "name": "Max",
+    "photo": "photos/contestant-049.jpg"
+  },
+  {
+    "id": "contestant-050",
+    "name": "alarna",
+    "photo": "photos/contestant-050.jpg"
+  },
+  {
+    "id": "contestant-051",
+    "name": "abraham",
+    "photo": "photos/contestant-051.jpg"
+  },
+  {
+    "id": "contestant-052",
+    "name": "Jay",
+    "photo": "photos/contestant-052.jpg"
+  },
+  {
+    "id": "contestant-053",
+    "name": "Jude",
+    "photo": "photos/contestant-053.jpg"
+  },
+  {
+    "id": "contestant-054",
+    "name": "Dylan",
+    "photo": "photos/contestant-054.jpg"
+  },
+  {
+    "id": "contestant-055",
+    "name": "Henry",
+    "photo": "photos/contestant-055.jpg"
+  },
+  {
+    "id": "contestant-056",
+    "name": "Jambo",
+    "photo": "photos/contestant-056.jpg"
+  },
+  {
+    "id": "contestant-057",
+    "name": "Max",
+    "photo": "photos/contestant-057.jpg"
+  },
+  {
+    "id": "contestant-058",
+    "name": "Gavin",
+    "photo": "photos/contestant-058.jpg"
+  },
+  {
+    "id": "contestant-059",
+    "name": "Jack",
+    "photo": "photos/contestant-059.jpg"
+  },
+  {
+    "id": "contestant-060",
+    "name": "Sulia",
+    "photo": "photos/contestant-060.jpg"
+  },
+  {
+    "id": "contestant-061",
+    "name": "Jose",
+    "photo": "photos/contestant-061.jpg"
+  },
+  {
+    "id": "contestant-062",
+    "name": "Chris",
+    "photo": "photos/contestant-062.jpg"
+  },
+  {
+    "id": "contestant-063",
+    "name": "Ryan",
+    "photo": "photos/contestant-063.jpg"
+  },
+  {
+    "id": "contestant-064",
+    "name": "soraia",
+    "photo": "photos/contestant-064.jpg"
+  },
+  {
+    "id": "contestant-065",
+    "name": "Perry",
+    "photo": "photos/contestant-065.jpg"
+  },
+  {
+    "id": "contestant-066",
+    "name": "Serenity",
+    "photo": "photos/contestant-066.jpg"
+  },
+  {
+    "id": "contestant-067",
+    "name": "Kevin",
+    "photo": "photos/contestant-067.jpg"
+  },
+  {
+    "id": "contestant-068",
+    "name": "Nalia",
+    "photo": "photos/contestant-068.jpg"
+  },
+  {
+    "id": "contestant-069",
+    "name": "Shania",
+    "photo": "photos/contestant-069.jpg"
+  },
+  {
+    "id": "contestant-070",
+    "name": "Carter",
+    "photo": "photos/contestant-070.jpg"
+  },
+  {
+    "id": "contestant-071",
+    "name": "Kaydence",
+    "photo": "photos/contestant-071.jpg"
+  },
+  {
+    "id": "contestant-072",
+    "name": "Gloom",
+    "photo": "photos/contestant-072.jpg"
   }
 ]
