@@ -2,14 +2,16 @@
 import io
 import json
 import re
+import shutil
 import sys
+import tempfile
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
 import gdown
 import pandas as pd
 import requests
-from PIL import Image, ImageOps, UnidentifiedImageError
+from PIL import Image, ImageOps
 from pillow_heif import register_heif_opener
 
 
@@ -29,15 +31,8 @@ PHOTO_COLUMN = (
 
 JPEG_QUALITY = 95
 
-# Enable HEIC/HEIF decoding through Pillow.
 register_heif_opener()
 
-
-def remove_non_jpeg_files(photos_dir: Path) -> None:
-    for path in photos_dir.iterdir():
-        if path.is_file() and path.suffix.lower() != ".jpg":
-            path.unlink()
-            print(f"Removed non-JPEG file: {path}")
 
 # --------------------------------------------------
 # Google Sheets
@@ -51,20 +46,16 @@ def get_sheet_csv_url(sheet_url):
     )
 
     if not match:
-        raise ValueError(
-            "Could not find the Google Sheets spreadsheet ID. "
-            "Use the normal Google Sheets viewer/edit URL."
-        )
+        raise ValueError("Could not find the Google Sheets spreadsheet ID.")
 
     spreadsheet_id = match.group(1)
     parsed = urlparse(sheet_url)
-
     params = parse_qs(parsed.query)
+
     gid = params.get("gid", [None])[0]
 
     if not gid and parsed.fragment:
-        fragment_params = parse_qs(parsed.fragment)
-        gid = fragment_params.get("gid", [None])[0]
+        gid = parse_qs(parsed.fragment).get("gid", [None])[0]
 
     csv_url = (
         f"https://docs.google.com/spreadsheets/d/"
@@ -82,7 +73,7 @@ def get_sheet_csv_url(sheet_url):
 # --------------------------------------------------
 
 def extract_drive_file_id(value):
-    """Extract a Google Drive file ID from a response cell."""
+    """Extract a Google Drive file ID from a URL or bare ID."""
     if not isinstance(value, str):
         return None
 
@@ -100,55 +91,103 @@ def extract_drive_file_id(value):
         if match:
             return match.group(1)
 
-    # Some cells contain a bare file ID.
     if re.fullmatch(r"[a-zA-Z0-9_-]{20,}", value):
         return value
 
     return None
 
 
-def download_photo(file_id, destination_without_extension):
-    """Download a public Drive file to a temporary path."""
-    temp_path = destination_without_extension.with_suffix(".download")
+def get_listing_value(item, key):
+    """Read a field from a gdown listing object or dictionary."""
+    if isinstance(item, dict):
+        return item.get(key)
 
-    temp_path.unlink(missing_ok=True)
+    return getattr(item, key, None)
 
-    result = gdown.download(
-        id=file_id,
-        output=str(temp_path),
+
+def download_drive_folder(folder_url, cache_dir):
+    """
+    List the public Drive folder, then download its contents
+    with one folder-level gdown call.
+
+    Returns a mapping:
+        Google Drive file ID -> local downloaded file path
+    """
+    print("\nReading Google Drive folder listing...")
+
+    listing = gdown.download_folder(
+        url=folder_url,
+        output=str(cache_dir),
+        quiet=True,
+        use_cookies=False,
+        skip_download=True,
+    )
+
+    if not listing:
+        raise RuntimeError(
+            "Could not list the Google Drive folder. "
+            "Check the folder URL, sharing permissions, and gdown version."
+        )
+
+    file_paths = {}
+
+    for item in listing:
+        file_url = get_listing_value(item, "url")
+        relative_path = get_listing_value(item, "path")
+
+        file_id = extract_drive_file_id(file_url)
+
+        if not file_id or not relative_path:
+            continue
+
+        file_paths[file_id] = cache_dir / relative_path
+
+    if not file_paths:
+        raise RuntimeError(
+            "The Drive folder listing did not contain usable file IDs and paths."
+        )
+
+    print(f"Found {len(file_paths)} files in the Drive folder.")
+    print("Downloading the folder contents...")
+
+    downloaded = gdown.download_folder(
+        url=folder_url,
+        output=str(cache_dir),
         quiet=False,
         use_cookies=False,
     )
 
-    if not result or not temp_path.exists():
-        temp_path.unlink(missing_ok=True)
+    if not downloaded:
         raise RuntimeError(
-            f"Download failed for Drive file {file_id}"
+            "Google Drive folder download failed. "
+            "Check folder permissions and the gdown output."
         )
 
-    if temp_path.stat().st_size == 0:
-        temp_path.unlink(missing_ok=True)
-        raise RuntimeError(
-            f"Downloaded file {file_id} is empty"
-        )
+    # Verify that the files listed by Drive actually exist locally.
+    available_paths = {
+        file_id: path
+        for file_id, path in file_paths.items()
+        if path.is_file() and path.stat().st_size > 0
+    }
 
-    return temp_path
+    print(
+        f"Downloaded {len(available_paths)} of "
+        f"{len(file_paths)} listed files."
+    )
+
+    return available_paths
 
 
 # --------------------------------------------------
-# Image conversion and validation
+# Image validation and conversion
 # --------------------------------------------------
 
 def verify_image_readable(path):
-    """
-    Verify that the downloaded file is a readable image.
-    Reopen it and fully decode the image to detect corruption.
-    """
+    """Verify that an image can be fully decoded."""
     try:
         with Image.open(path) as image:
             image.verify()
 
-        # verify() invalidates the image object, so reopen it.
         with Image.open(path) as image:
             image.load()
 
@@ -164,17 +203,9 @@ def verify_image_readable(path):
 
 
 def convert_to_jpeg(source_path, destination_without_extension):
-    """
-    Convert a downloaded image to JPEG, then verify the result.
-
-    Handles HEIC/HEIF and other image formats supported by Pillow.
-    Applies EXIF orientation and composites transparency onto white.
-    Returns the verified JPEG path.
-    """
+    """Convert an image to JPEG and validate the output before publishing."""
     final_path = destination_without_extension.with_suffix(".jpg")
 
-    # Write to a temporary JPEG first. The final file is replaced
-    # only after conversion and validation both succeed.
     temp_jpeg = destination_without_extension.with_name(
         destination_without_extension.name + ".tmp.jpg"
     )
@@ -182,18 +213,13 @@ def convert_to_jpeg(source_path, destination_without_extension):
     temp_jpeg.unlink(missing_ok=True)
 
     try:
-        # First check that the source can actually be decoded.
         original_size = verify_image_readable(source_path)
 
         with Image.open(source_path) as source:
-            # Use the first frame for animated images.
             source.seek(0)
-
-            # Correct phone-camera orientation from EXIF metadata.
             image = ImageOps.exif_transpose(source)
 
-            # Convert transparency to a white background because
-            # JPEG does not support an alpha channel.
+            # JPEG does not support transparency. Use a white background.
             if (
                 image.mode in ("RGBA", "LA")
                 or (
@@ -214,8 +240,6 @@ def convert_to_jpeg(source_path, destination_without_extension):
                     rgba,
                 ).convert("RGB")
             else:
-                # Also handles grayscale, palette, CMYK, and
-                # other modes that JPEG cannot store directly.
                 image = image.convert("RGB")
 
             image.save(
@@ -226,48 +250,31 @@ def convert_to_jpeg(source_path, destination_without_extension):
                 progressive=True,
             )
 
-        # Confirm that the output exists and is not empty.
-        if (
-            not temp_jpeg.exists()
-            or temp_jpeg.stat().st_size == 0
-        ):
-            raise RuntimeError(
-                "JPEG conversion produced an empty file"
-            )
+        if not temp_jpeg.exists() or temp_jpeg.stat().st_size == 0:
+            raise RuntimeError("JPEG conversion produced an empty file.")
 
-        # Validate the output's actual format and decoded contents.
         with Image.open(temp_jpeg) as check:
             if check.format != "JPEG":
-                raise RuntimeError(
-                    f"Expected JPEG, got {check.format!r}"
-                )
+                raise RuntimeError("Converted file is not a JPEG.")
 
             if check.mode != "RGB":
-                raise RuntimeError(
-                    f"Expected RGB mode, got {check.mode!r}"
-                )
+                raise RuntimeError("Converted JPEG is not in RGB mode.")
 
             check.load()
 
             if check.width <= 0 or check.height <= 0:
-                raise RuntimeError(
-                    "Converted JPEG has invalid dimensions"
-                )
+                raise RuntimeError("Converted JPEG has invalid dimensions.")
 
             converted_size = check.size
 
-        # Check the JPEG signature as an additional format check.
         with open(temp_jpeg, "rb") as file:
-            if not file.read(3) == b"\xff\xd8\xff":
-                raise RuntimeError(
-                    "Converted file does not have a JPEG signature"
-                )
+            if file.read(3) != b"\xff\xd8\xff":
+                raise RuntimeError("Invalid JPEG file signature.")
 
-        # Publish the finished file only after all checks pass.
         temp_jpeg.replace(final_path)
 
         print(
-            f"  Verified JPEG: {final_path} "
+            f"  Verified: {final_path} "
             f"({original_size[0]}x{original_size[1]} -> "
             f"{converted_size[0]}x{converted_size[1]})"
         )
@@ -278,6 +285,29 @@ def convert_to_jpeg(source_path, destination_without_extension):
         temp_jpeg.unlink(missing_ok=True)
         final_path.unlink(missing_ok=True)
         raise
+
+
+# --------------------------------------------------
+# Photos directory cleanup
+# --------------------------------------------------
+
+def clean_photos_directory(photos_dir, keep_paths):
+    """
+    Keep only the JPEGs referenced by the newly generated JSON.
+    Remove old JPEGs, PNGs, HEICs, and other leftover files.
+    """
+    keep_paths = {
+        Path(path).resolve()
+        for path in keep_paths
+    }
+
+    for path in photos_dir.iterdir():
+        if not path.is_file():
+            continue
+
+        if path.resolve() not in keep_paths:
+            path.unlink()
+            print(f"Removed old or unused file: {path}")
 
 
 # --------------------------------------------------
@@ -306,19 +336,14 @@ def main():
 
     PHOTOS_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Fetch the public Google Sheet as CSV.
+    # Fetch the public Google Sheet.
     csv_url = get_sheet_csv_url(sheet_url)
 
-    response = requests.get(
-        csv_url,
-        timeout=30,
-    )
+    response = requests.get(csv_url, timeout=30)
     response.raise_for_status()
 
     df = pd.read_csv(
-        io.StringIO(
-            response.content.decode("utf-8-sig")
-        )
+        io.StringIO(response.content.decode("utf-8-sig"))
     )
     df.columns = df.columns.str.strip()
 
@@ -332,94 +357,89 @@ def main():
     contestants = []
     failures = []
 
-    for row_number, row in df.iterrows():
-        name_value = row[NAME_COLUMN]
-        photo_value = row[PHOTO_COLUMN]
+    # The temporary directory is removed when processing finishes.
+    with tempfile.TemporaryDirectory(
+        prefix="only1name_drive_"
+    ) as temp_directory:
 
-        name = (
-            str(name_value).strip()
-            if pd.notna(name_value)
-            else ""
-        )
+        cache_dir = Path(temp_directory)
 
-        photo_cell = (
-            str(photo_value).strip()
-            if pd.notna(photo_value)
-            else ""
-        )
+        # Download the folder contents before processing contestants.
+        drive_files = download_drive_folder(folder_url, cache_dir)
 
-        if not name:
-            continue
+        for row_number, row in df.iterrows():
+            name_value = row[NAME_COLUMN]
+            photo_value = row[PHOTO_COLUMN]
 
-        file_id = extract_drive_file_id(photo_cell)
-
-        if not file_id:
-            failures.append(
-                f"Row {row_number + 2}, {name!r}: "
-                "could not extract a Drive file ID"
-            )
-            continue
-
-        # Assign the next ID only after a contestant succeeds.
-        contestant_number = len(contestants) + 1
-
-        contestant_id = (
-            f"contestant-{contestant_number:03d}"
-        )
-
-        base_path = (
-            PHOTOS_DIR / contestant_id
-        )
-
-        downloaded_path = None
-
-        try:
-            print(
-                f"\nProcessing row {row_number + 2}: {name}"
+            name = (
+                str(name_value).strip()
+                if pd.notna(name_value)
+                else ""
             )
 
-            downloaded_path = download_photo(
-                file_id,
-                base_path,
+            photo_cell = (
+                str(photo_value).strip()
+                if pd.notna(photo_value)
+                else ""
             )
 
-            photo_path = convert_to_jpeg(
-                downloaded_path,
-                base_path,
-            )
+            if not name:
+                continue
 
-            contestants.append(
-                {
-                    "id": contestant_id,
-                    "name": name,
-                    "photo": photo_path.as_posix(),
-                }
-            )
+            file_id = extract_drive_file_id(photo_cell)
 
-            print(
-                f"  Success: {name} -> {photo_path}"
-            )
+            if not file_id:
+                failures.append(
+                    f"Row {row_number + 2}, {name!r}: "
+                    "could not extract a Drive file ID"
+                )
+                continue
 
-        except Exception as error:
-            failures.append(
-                f"Row {row_number + 2}, {name!r}: {error}"
-            )
+            source_path = drive_files.get(file_id)
 
-            print(f"  FAILED: {error}")
+            if source_path is None or not source_path.is_file():
+                failures.append(
+                    f"Row {row_number + 2}, {name!r}: "
+                    "photo was not found in the downloaded Drive folder"
+                )
+                continue
 
-        finally:
-            if downloaded_path is not None:
-                downloaded_path.unlink(missing_ok=True)
+            contestant_number = len(contestants) + 1
+            contestant_id = f"contestant-{contestant_number:03d}"
+            base_path = PHOTOS_DIR / contestant_id
 
-    # Never overwrite the existing JSON if no images succeeded.
+            try:
+                print(f"\nProcessing row {row_number + 2}: {name}")
+
+                photo_path = convert_to_jpeg(
+                    source_path,
+                    base_path,
+                )
+
+                contestants.append(
+                    {
+                        "id": contestant_id,
+                        "name": name,
+                        "photo": photo_path.as_posix(),
+                    }
+                )
+
+                print(f"  Success: {name} -> {photo_path}")
+
+            except Exception as error:
+                failures.append(
+                    f"Row {row_number + 2}, {name!r}: {error}"
+                )
+                print(f"  FAILED: {error}")
+
+    # Do not replace the JSON if no contestants were processed.
     if not contestants:
         raise RuntimeError(
             "No contestants were generated. "
             "The existing contestants.json was not replaced. "
-            "Check the sheet URL, column names, and Drive permissions."
+            "Check the Sheet, folder permissions, and image files."
         )
 
-    # Build JSON in memory and write it only after processing.
     json_content = (
         json.dumps(
             contestants,
@@ -429,9 +449,7 @@ def main():
         + "\n"
     )
 
-    temp_json_path = JSON_PATH.with_name(
-        JSON_PATH.name + ".tmp"
-    )
+    temp_json_path = JSON_PATH.with_name(JSON_PATH.name + ".tmp")
 
     try:
         temp_json_path.write_text(
@@ -439,33 +457,32 @@ def main():
             encoding="utf-8",
         )
 
-        # Ensure the JSON itself is valid before replacing the old one.
-        json.loads(
-            temp_json_path.read_text(encoding="utf-8")
-        )
-
+        # Validate the JSON before replacing the existing file.
+        json.loads(temp_json_path.read_text(encoding="utf-8"))
         temp_json_path.replace(JSON_PATH)
 
     finally:
         temp_json_path.unlink(missing_ok=True)
 
+    # Keep only the JPEGs referenced by the newly written JSON.
+    clean_photos_directory(
+        PHOTOS_DIR,
+        [contestant["photo"] for contestant in contestants],
+    )
+
     print(
         f"\nCreated {JSON_PATH} with "
         f"{len(contestants)} verified contestants."
     )
-    
-    remove_non_jpeg_files(PHOTOS_DIR)
 
     if failures:
-        print(
-            f"\nWARNING: {len(failures)} row(s) failed:"
-        )
+        print(f"\nWARNING: {len(failures)} row(s) failed:")
 
         for failure in failures:
             print(f"  - {failure}")
 
         print(
-            "\nThe JSON contains only successfully converted images. "
+            "\nThe JSON contains only successful conversions. "
             "Review the failures before publishing."
         )
 
