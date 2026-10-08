@@ -1,4 +1,3 @@
-
 import io
 import json
 import re
@@ -36,6 +35,59 @@ register_heif_opener()
 
 
 # --------------------------------------------------
+# Paths
+# --------------------------------------------------
+
+def get_relative_photo_path(path):
+    """
+    Convert a local filesystem path into a website-relative path.
+
+    Example:
+        /Users/reza/Misc/hof/only1name/photos/contestant-037.jpg
+
+    becomes:
+        photos/contestant-037.jpg
+    """
+    path = Path(path)
+
+    try:
+        return path.resolve().relative_to(
+            Path.cwd().resolve()
+        ).as_posix()
+
+    except ValueError:
+        if not path.is_absolute():
+            return path.as_posix()
+
+        parts = path.parts
+
+        if "photos" in parts:
+            index = len(parts) - 1 - parts[::-1].index("photos")
+            return Path(*parts[index:]).as_posix()
+
+        raise RuntimeError(
+            f"Photo path is outside the project directory: {path}"
+        )
+
+
+def get_local_photo_path(photo_path):
+    """
+    Convert a stored photo path into a local filesystem path.
+
+    Handles:
+        photos/contestant-037.jpg
+        photos/drive-ABC.jpg
+        /Users/reza/.../photos/contestant-037.jpg
+    """
+    path = Path(photo_path)
+
+    if path.is_absolute():
+        return path
+
+    return Path.cwd() / path
+
+
+# --------------------------------------------------
 # Google Sheets
 # --------------------------------------------------
 
@@ -46,7 +98,9 @@ def get_sheet_csv_url(sheet_url):
     )
 
     if not match:
-        raise ValueError("Could not find the Google Sheets spreadsheet ID.")
+        raise ValueError(
+            "Could not find the Google Sheets spreadsheet ID."
+        )
 
     spreadsheet_id = match.group(1)
     parsed = urlparse(sheet_url)
@@ -87,6 +141,7 @@ def extract_drive_file_id(value):
 
     for pattern in patterns:
         match = re.search(pattern, value)
+
         if match:
             return match.group(1)
 
@@ -99,7 +154,10 @@ def extract_drive_file_id(value):
 def download_photo(file_id, destination_without_extension):
     """Download one missing or changed image using cached browser cookies."""
 
-    temp_path = destination_without_extension.with_suffix(".download")
+    temp_path = destination_without_extension.with_suffix(
+        ".download"
+    )
+
     temp_path.unlink(missing_ok=True)
 
     print(f"  Downloading Drive file: {file_id}")
@@ -114,17 +172,20 @@ def download_photo(file_id, destination_without_extension):
 
     if not result or not temp_path.exists():
         temp_path.unlink(missing_ok=True)
+
         raise RuntimeError(
             f"Download failed for Drive file {file_id}"
         )
 
     if temp_path.stat().st_size == 0:
         temp_path.unlink(missing_ok=True)
+
         raise RuntimeError(
             f"Downloaded file {file_id} is empty"
         )
 
     return temp_path
+
 
 # --------------------------------------------------
 # Existing state and cache
@@ -135,7 +196,10 @@ def load_json_if_exists(path, default):
         return default
 
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(
+            path.read_text(encoding="utf-8")
+        )
+
     except Exception as error:
         raise RuntimeError(
             f"Could not read {path}: {error}. "
@@ -145,15 +209,23 @@ def load_json_if_exists(path, default):
 
 def is_valid_jpeg(path):
     """Return True only if the file is a fully readable JPEG."""
+
     try:
         with Image.open(path) as image:
+
             if image.format != "JPEG":
                 return False
+
             image.verify()
 
         with Image.open(path) as image:
+
             image.load()
-            return image.width > 0 and image.height > 0
+
+            return (
+                image.width > 0
+                and image.height > 0
+            )
 
     except Exception:
         return False
@@ -164,36 +236,54 @@ def build_legacy_name_index(old_contestants):
     Index existing JSON entries by name for first-run migration.
     Duplicate names are kept as lists and consumed only once.
     """
+
     result = {}
 
     for contestant in old_contestants:
+
         if not isinstance(contestant, dict):
             continue
 
-        name = str(contestant.get("name", "")).strip()
-        photo = contestant.get("photo", "")
+        name = str(
+            contestant.get("name", "")
+        ).strip()
+
+        photo = contestant.get(
+            "photo",
+            ""
+        )
 
         if name and photo:
-            result.setdefault(name, []).append(photo)
+            result.setdefault(
+                name,
+                []
+            ).append(photo)
 
     return result
 
 
-def find_legacy_photo(name, legacy_index, already_used):
-    """Find a valid existing photo for a name during migration."""
-    for photo in legacy_index.get(name, []):
-        path = Path(photo)
+def find_legacy_photo(
+    name,
+    legacy_index,
+    already_used,
+):
+    """Find a valid existing photo for a name."""
 
-        if not path.is_absolute():
-            path = Path.cwd() / path
+    for photo in legacy_index.get(name, []):
+
+        path = get_local_photo_path(photo)
 
         resolved = path.resolve()
 
         if resolved in already_used:
             continue
 
-        if path.is_file() and is_valid_jpeg(path):
+        if (
+            path.is_file()
+            and is_valid_jpeg(path)
+        ):
             already_used.add(resolved)
+
             return path
 
     return None
@@ -205,38 +295,62 @@ def find_legacy_photo(name, legacy_index, already_used):
 
 def verify_image_readable(path):
     try:
+
         with Image.open(path) as image:
             image.verify()
 
         with Image.open(path) as image:
+
             image.load()
 
-            if image.width <= 0 or image.height <= 0:
-                raise ValueError("Image has invalid dimensions")
+            if (
+                image.width <= 0
+                or image.height <= 0
+            ):
+                raise ValueError(
+                    "Image has invalid dimensions"
+                )
 
             return image.size
 
     except Exception as error:
+
         raise RuntimeError(
-            f"Downloaded file is not a valid, readable image: {error}"
+            "Downloaded file is not a valid, "
+            f"readable image: {error}"
         ) from error
 
 
-def convert_to_jpeg(source_path, destination_without_extension):
+def convert_to_jpeg(
+    source_path,
+    destination_without_extension,
+):
     """Convert an image and validate the resulting JPEG."""
-    final_path = destination_without_extension.with_suffix(".jpg")
+
+    final_path = destination_without_extension.with_suffix(
+        ".jpg"
+    )
+
     temp_jpeg = destination_without_extension.with_name(
-        destination_without_extension.name + ".tmp.jpg"
+        destination_without_extension.name
+        + ".tmp.jpg"
     )
 
     temp_jpeg.unlink(missing_ok=True)
 
     try:
-        original_size = verify_image_readable(source_path)
+
+        original_size = verify_image_readable(
+            source_path
+        )
 
         with Image.open(source_path) as source:
+
             source.seek(0)
-            image = ImageOps.exif_transpose(source)
+
+            image = ImageOps.exif_transpose(
+                source
+            )
 
             if (
                 image.mode in ("RGBA", "LA")
@@ -245,16 +359,22 @@ def convert_to_jpeg(source_path, destination_without_extension):
                     and "transparency" in image.info
                 )
             ):
+
                 rgba = image.convert("RGBA")
+
                 background = Image.new(
                     "RGBA",
                     rgba.size,
                     (255, 255, 255, 255),
                 )
+
                 image = Image.alpha_composite(
-                    background, rgba
+                    background,
+                    rgba,
                 ).convert("RGB")
+
             else:
+
                 image = image.convert("RGB")
 
             image.save(
@@ -265,23 +385,42 @@ def convert_to_jpeg(source_path, destination_without_extension):
                 progressive=True,
             )
 
-        if not temp_jpeg.exists() or temp_jpeg.stat().st_size == 0:
-            raise RuntimeError("JPEG conversion produced an empty file")
+        if (
+            not temp_jpeg.exists()
+            or temp_jpeg.stat().st_size == 0
+        ):
+            raise RuntimeError(
+                "JPEG conversion produced an empty file"
+            )
 
         with Image.open(temp_jpeg) as check:
-            if check.format != "JPEG" or check.mode != "RGB":
-                raise RuntimeError("Converted image is not an RGB JPEG")
+
+            if (
+                check.format != "JPEG"
+                or check.mode != "RGB"
+            ):
+                raise RuntimeError(
+                    "Converted image is not an RGB JPEG"
+                )
 
             check.load()
 
-            if check.width <= 0 or check.height <= 0:
-                raise RuntimeError("Converted JPEG has invalid dimensions")
+            if (
+                check.width <= 0
+                or check.height <= 0
+            ):
+                raise RuntimeError(
+                    "Converted JPEG has invalid dimensions"
+                )
 
             converted_size = check.size
 
         with open(temp_jpeg, "rb") as file:
+
             if file.read(3) != b"\xff\xd8\xff":
-                raise RuntimeError("Invalid JPEG file signature")
+                raise RuntimeError(
+                    "Invalid JPEG file signature"
+                )
 
         temp_jpeg.replace(final_path)
 
@@ -294,8 +433,15 @@ def convert_to_jpeg(source_path, destination_without_extension):
         return final_path
 
     except Exception:
-        temp_jpeg.unlink(missing_ok=True)
-        final_path.unlink(missing_ok=True)
+
+        temp_jpeg.unlink(
+            missing_ok=True
+        )
+
+        final_path.unlink(
+            missing_ok=True
+        )
+
         raise
 
 
@@ -304,36 +450,58 @@ def convert_to_jpeg(source_path, destination_without_extension):
 # --------------------------------------------------
 
 def write_json_atomically(path, data):
-    temp_path = path.with_name(path.name + ".tmp")
+    temp_path = path.with_name(
+        path.name + ".tmp"
+    )
 
     try:
+
         temp_path.write_text(
-            json.dumps(data, indent=2, ensure_ascii=False) + "\n",
+            json.dumps(
+                data,
+                indent=2,
+                ensure_ascii=False,
+            ) + "\n",
             encoding="utf-8",
         )
 
-        # Validate before replacing the existing file.
-        json.loads(temp_path.read_text(encoding="utf-8"))
+        json.loads(
+            temp_path.read_text(
+                encoding="utf-8"
+            )
+        )
+
         temp_path.replace(path)
 
     finally:
-        temp_path.unlink(missing_ok=True)
+
+        temp_path.unlink(
+            missing_ok=True
+        )
 
 
 def clean_photos_directory(keep_paths):
-    """Keep only the JPEGs referenced by the current contestants.json."""
+    """
+    Keep only the JPEGs referenced by contestants.json.
+    """
+
     keep = {
-        Path(path).resolve()
+        get_local_photo_path(path).resolve()
         for path in keep_paths
     }
 
     for path in PHOTOS_DIR.iterdir():
+
         if not path.is_file():
             continue
 
         if path.resolve() not in keep:
+
             path.unlink()
-            print(f"Removed obsolete file: {path}")
+
+            print(
+                f"Removed obsolete file: {path}"
+            )
 
 
 # --------------------------------------------------
@@ -341,11 +509,14 @@ def clean_photos_directory(keep_paths):
 # --------------------------------------------------
 
 def main():
+
     if len(sys.argv) != 3:
+
         print(
             'Usage: python3 sync.py "GOOGLE_SHEET_URL" '
             '"GOOGLE_DRIVE_FOLDER_URL"'
         )
+
         sys.exit(1)
 
     sheet_url = sys.argv[1]
@@ -355,50 +526,106 @@ def main():
         r"drive\.google\.com/drive/(?:u/\d+/)?folders/",
         folder_url,
     ):
-        raise ValueError("The second URL must be a Google Drive folder URL.")
+        raise ValueError(
+            "The second URL must be a Google Drive folder URL."
+        )
 
-    PHOTOS_DIR.mkdir(parents=True, exist_ok=True)
+    PHOTOS_DIR.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
-    # Fetch the current Sheet.
+    # --------------------------------------------------
+    # Fetch current Sheet
+    # --------------------------------------------------
+
     response = requests.get(
         get_sheet_csv_url(sheet_url),
         timeout=30,
     )
+
     response.raise_for_status()
 
     df = pd.read_csv(
-        io.StringIO(response.content.decode("utf-8-sig"))
+        io.StringIO(
+            response.content.decode(
+                "utf-8-sig"
+            )
+        )
     )
+
     df.columns = df.columns.str.strip()
 
-    for column in (NAME_COLUMN, PHOTO_COLUMN):
+    for column in (
+        NAME_COLUMN,
+        PHOTO_COLUMN,
+    ):
+
         if column not in df.columns:
+
             raise ValueError(
                 f"Column not found: {column!r}\n"
                 f"Available columns: {list(df.columns)}"
             )
 
-    old_contestants = load_json_if_exists(JSON_PATH, [])
+    # --------------------------------------------------
+    # Load existing state
+    # --------------------------------------------------
+
+    old_contestants = load_json_if_exists(
+        JSON_PATH,
+        [],
+    )
+
     manifest_exists = MANIFEST_PATH.exists()
-    manifest = load_json_if_exists(MANIFEST_PATH, {})
 
-    if not isinstance(old_contestants, list):
-        raise RuntimeError(f"{JSON_PATH} must contain a JSON list.")
+    manifest = load_json_if_exists(
+        MANIFEST_PATH,
+        {},
+    )
 
-    if not isinstance(manifest, dict):
-        raise RuntimeError(f"{MANIFEST_PATH} must contain a JSON object.")
+    if not isinstance(
+        old_contestants,
+        list,
+    ):
+        raise RuntimeError(
+            f"{JSON_PATH} must contain a JSON list."
+        )
 
-    legacy_index = build_legacy_name_index(old_contestants)
+    if not isinstance(
+        manifest,
+        dict,
+    ):
+        raise RuntimeError(
+            f"{MANIFEST_PATH} must contain a JSON object."
+        )
+
+    legacy_index = build_legacy_name_index(
+        old_contestants
+    )
+
     used_legacy_photos = set()
+
+    # --------------------------------------------------
+    # Sync state
+    # --------------------------------------------------
 
     new_contestants = []
     new_manifest = {}
+
     pending_files = []
+    files_to_remove = []
+
     failures = []
+
     reused_count = 0
     downloaded_count = 0
+    renamed_count = 0
 
-    # Keep temporary downloads and conversions outside photos/.
+    # --------------------------------------------------
+    # Process Sheet
+    # --------------------------------------------------
+
     with tempfile.TemporaryDirectory(
         prefix="only1name_sync_"
     ) as temp_directory:
@@ -406,6 +633,7 @@ def main():
         temp_dir = Path(temp_directory)
 
         for row_number, row in df.iterrows():
+
             name = (
                 str(row[NAME_COLUMN]).strip()
                 if pd.notna(row[NAME_COLUMN])
@@ -421,158 +649,415 @@ def main():
             if not name:
                 continue
 
-            file_id = extract_drive_file_id(photo_cell)
+            file_id = extract_drive_file_id(
+                photo_cell
+            )
 
             if not file_id:
+
                 failures.append(
-                    f"Row {row_number + 2}, {name!r}: "
+                    f"Row {row_number + 2}, "
+                    f"{name!r}: "
                     "could not extract Drive file ID"
                 )
+
                 continue
 
+            # Contestant number is based on Sheet order.
+            contestant_number = (
+                len(new_contestants) + 1
+            )
+
+            contestant_id = (
+                f"contestant-"
+                f"{contestant_number:03d}"
+            )
+
+            desired_path = (
+                PHOTOS_DIR
+                / f"{contestant_id}.jpg"
+            )
+
             try:
-                cached_record = manifest.get(file_id)
+
+                cached_record = manifest.get(
+                    file_id
+                )
+
                 photo_path = None
 
-                # Preferred path: reuse the photo previously mapped
-                # to this exact Drive file ID.
-                if isinstance(cached_record, dict):
-                    cached_photo = cached_record.get("photo")
+                # --------------------------------------------------
+                # Try to reuse the photo from the manifest
+                # --------------------------------------------------
+
+                if isinstance(
+                    cached_record,
+                    dict,
+                ):
+
+                    cached_photo = (
+                        cached_record.get(
+                            "photo"
+                        )
+                    )
 
                     if cached_photo:
-                        candidate = Path(cached_photo)
 
-                        if not candidate.is_absolute():
-                            candidate = Path.cwd() / candidate
+                        candidate = (
+                            get_local_photo_path(
+                                cached_photo
+                            )
+                        )
 
-                        if candidate.is_file() and is_valid_jpeg(candidate):
+                        if (
+                            candidate.is_file()
+                            and is_valid_jpeg(
+                                candidate
+                            )
+                        ):
+
                             photo_path = candidate
-                            reused_count += 1
-                            print(f"Reusing: {name} ({candidate.name})")
 
-                # First-run migration: reuse existing photos by name.
-                # Do not use this fallback once a manifest exists,
-                # because a changed Drive file ID should trigger a download.
-                if photo_path is None and not manifest_exists:
-                    legacy_photo = find_legacy_photo(
-                        name,
-                        legacy_index,
-                        used_legacy_photos,
+                            reused_count += 1
+
+                            print(
+                                f"Reusing: {name} "
+                                f"({candidate.name})"
+                            )
+
+                # --------------------------------------------------
+                # First-run migration by name
+                # --------------------------------------------------
+
+                if (
+                    photo_path is None
+                    and not manifest_exists
+                ):
+
+                    legacy_photo = (
+                        find_legacy_photo(
+                            name,
+                            legacy_index,
+                            used_legacy_photos,
+                        )
                     )
 
                     if legacy_photo is not None:
+
                         photo_path = legacy_photo
+
                         reused_count += 1
+
                         print(
-                            f"Migrating existing photo for {name}: "
+                            f"Migrating existing photo "
+                            f"for {name}: "
                             f"{legacy_photo.name}"
                         )
 
-                # Only download if we could not reuse a valid JPEG.
+                # --------------------------------------------------
+                # Download if no existing photo can be reused
+                # --------------------------------------------------
+
                 if photo_path is None:
-                    print(f"\nDownloading new or changed photo: {name}")
+
+                    print(
+                        f"\nDownloading new or changed "
+                        f"photo: {name}"
+                    )
 
                     downloaded_path = None
 
                     try:
-                        downloaded_path = download_photo(
-                            file_id,
-                            temp_dir / f"download-{file_id}",
+
+                        downloaded_path = (
+                            download_photo(
+                                file_id,
+                                temp_dir
+                                / f"download-{file_id}",
+                            )
                         )
 
-                        converted_path = convert_to_jpeg(
-                            downloaded_path,
-                            temp_dir / f"drive-{file_id}",
+                        converted_path = (
+                            convert_to_jpeg(
+                                downloaded_path,
+                                temp_dir
+                                / f"drive-{file_id}",
+                            )
                         )
 
                     finally:
-                        if downloaded_path is not None:
-                            downloaded_path.unlink(missing_ok=True)
 
-                    # Stable filename based on the Drive file ID.
-                    # Commit this file to photos/ only after every
-                    # Sheet entry has been processed successfully.
-                    final_path = PHOTOS_DIR / f"drive-{file_id}.jpg"
+                        if downloaded_path is not None:
+
+                            downloaded_path.unlink(
+                                missing_ok=True
+                            )
 
                     pending_files.append(
-                        (converted_path, final_path)
+                        (
+                            converted_path,
+                            desired_path,
+                        )
                     )
 
-                    photo_path = final_path
+                    photo_path = desired_path
+
                     downloaded_count += 1
+
+                # --------------------------------------------------
+                # Rename/reuse existing file so it becomes
+                # contestant-XXX.jpg
+                # --------------------------------------------------
+
+                if photo_path != desired_path:
+
+                    if desired_path.exists():
+
+                        if is_valid_jpeg(
+                            desired_path
+                        ):
+                            # The desired file already exists
+                            # and is valid. Keep it.
+                            files_to_remove.append(
+                                photo_path
+                            )
+
+                            photo_path = desired_path
+
+                        else:
+                            # Desired path exists but is invalid.
+                            desired_path.unlink()
+
+                    if photo_path != desired_path:
+
+                        # If this is a newly downloaded file,
+                        # it has not been committed yet.
+                        pending_source = None
+
+                        for (
+                            temp_photo,
+                            final_photo,
+                        ) in pending_files:
+
+                            if final_photo == photo_path:
+
+                                pending_source = (
+                                    temp_photo
+                                )
+
+                                break
+
+                        if pending_source is not None:
+
+                            # Change the pending destination.
+                            pending_files = [
+                                (
+                                    temp_photo,
+                                    desired_path
+                                    if final_photo
+                                    == photo_path
+                                    else final_photo,
+                                )
+                                for (
+                                    temp_photo,
+                                    final_photo,
+                                ) in pending_files
+                            ]
+
+                            photo_path = desired_path
+
+                        elif photo_path.exists():
+
+                            print(
+                                f"  Renaming "
+                                f"{photo_path.name} "
+                                f"-> "
+                                f"{desired_path.name}"
+                            )
+
+                            desired_path.parent.mkdir(
+                                parents=True,
+                                exist_ok=True,
+                            )
+
+                            photo_path.replace(
+                                desired_path
+                            )
+
+                            photo_path = desired_path
+
+                            renamed_count += 1
+
+                # --------------------------------------------------
+                # Final website path
+                # --------------------------------------------------
+
+                relative_photo_path = (
+                    f"photos/{contestant_id}.jpg"
+                )
 
                 new_contestants.append(
                     {
-                        "id": f"contestant-{len(new_contestants) + 1:03d}",
+                        "id": contestant_id,
                         "name": name,
-                        "photo": photo_path.as_posix(),
+                        "photo": relative_photo_path,
                     }
                 )
 
+                # Manifest still maps Drive ID -> current
+                # contestant filename.
                 new_manifest[file_id] = {
                     "name": name,
-                    "photo": photo_path.as_posix(),
+                    "photo": relative_photo_path,
                 }
 
             except Exception as error:
-                failures.append(
-                    f"Row {row_number + 2}, {name!r}: {error}"
-                )
-                print(f"  FAILED: {error}")
 
-        # Fail safely. Do not replace the JSON or delete existing photos
-        # if any row failed.
+                failures.append(
+                    f"Row {row_number + 2}, "
+                    f"{name!r}: {error}"
+                )
+
+                print(
+                    f"  FAILED: {error}"
+                )
+
+        # --------------------------------------------------
+        # Abort safely if anything failed
+        # --------------------------------------------------
+
         if failures:
-            print(f"\nSync aborted: {len(failures)} row(s) failed.")
+
+            print(
+                f"\nSync aborted: "
+                f"{len(failures)} row(s) failed."
+            )
 
             for failure in failures:
-                print(f"  - {failure}")
+                print(
+                    f"  - {failure}"
+                )
 
             raise RuntimeError(
-                "Sync was incomplete. Existing contestants.json, "
-                "manifest, and photos were preserved. Fix the failures "
-                "and run the script again."
+                "Sync was incomplete. Existing "
+                "contestants.json, manifest, and "
+                "photos were preserved. Fix the "
+                "failures and run the script again."
             )
 
         if not new_contestants:
+
             raise RuntimeError(
-                "No contestants found. Existing files were preserved."
+                "No contestants found. Existing "
+                "files were preserved."
             )
 
-        # Commit newly converted photos after all rows succeeded.
-        for temp_photo, final_photo in pending_files:
+        # --------------------------------------------------
+        # Commit newly downloaded photos
+        # --------------------------------------------------
+
+        for (
+            temp_photo,
+            final_photo,
+        ) in pending_files:
+
             staging_path = final_photo.with_name(
-                final_photo.stem + ".tmp.jpg"
+                final_photo.stem
+                + ".tmp.jpg"
             )
 
             try:
-                shutil.copy2(temp_photo, staging_path)
 
-                if not is_valid_jpeg(staging_path):
+                shutil.copy2(
+                    temp_photo,
+                    staging_path,
+                )
+
+                if not is_valid_jpeg(
+                    staging_path
+                ):
+
                     raise RuntimeError(
-                        f"Staged JPEG failed validation: {staging_path}"
+                        f"Staged JPEG failed validation: "
+                        f"{staging_path}"
                     )
 
-                staging_path.replace(final_photo)
+                staging_path.replace(
+                    final_photo
+                )
 
             finally:
-                staging_path.unlink(missing_ok=True)
 
-        # Update JSON and manifest only after processing succeeds.
-        write_json_atomically(JSON_PATH, new_contestants)
-        write_json_atomically(MANIFEST_PATH, new_manifest)
+                staging_path.unlink(
+                    missing_ok=True
+                )
 
-    # Remove old photos only after the successful sync.
+        # --------------------------------------------------
+        # Update JSON and manifest
+        # --------------------------------------------------
+
+        write_json_atomically(
+            JSON_PATH,
+            new_contestants,
+        )
+
+        write_json_atomically(
+            MANIFEST_PATH,
+            new_manifest,
+        )
+
+    # --------------------------------------------------
+    # Remove obsolete files
+    # --------------------------------------------------
+
+    # Keep exactly contestant-001.jpg through
+    # contestant-NNN.jpg.
+    keep_paths = [
+        PHOTOS_DIR
+        / f"contestant-{i:03d}.jpg"
+        for i in range(
+            1,
+            len(new_contestants) + 1,
+        )
+    ]
+
     clean_photos_directory(
-        [contestant["photo"] for contestant in new_contestants]
+        keep_paths
     )
 
+    # --------------------------------------------------
+    # Done
+    # --------------------------------------------------
+
     print("\nSync completed successfully.")
-    print(f"Contestants in Sheet: {len(new_contestants)}")
-    print(f"Existing photos reused: {reused_count}")
-    print(f"Photos downloaded and converted: {downloaded_count}")
-    print(f"Updated: {JSON_PATH}")
-    print(f"Updated: {MANIFEST_PATH}")
+
+    print(
+        f"Contestants in Sheet: "
+        f"{len(new_contestants)}"
+    )
+
+    print(
+        f"Existing photos reused: "
+        f"{reused_count}"
+    )
+
+    print(
+        f"Photos downloaded and converted: "
+        f"{downloaded_count}"
+    )
+
+    print(
+        f"Photos renamed: "
+        f"{renamed_count}"
+    )
+
+    print(
+        f"Updated: {JSON_PATH}"
+    )
+
+    print(
+        f"Updated: {MANIFEST_PATH}"
+    )
 
 
 if __name__ == "__main__":
