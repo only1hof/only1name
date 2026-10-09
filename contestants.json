@@ -398,5 +398,70 @@
     "id": "contestant-080",
     "name": "Sarah",
     "photo": "photos/contestant-080.jpg"
+  },
+  {
+    "id": "contestant-081",
+    "name": "Sarai",
+    "photo": "photos/contestant-081.jpg"
+  },
+  {
+    "id": "contestant-082",
+    "name": "Marissa",
+    "photo": "photos/contestant-082.jpg"
+  },
+  {
+    "id": "contestant-083",
+    "name": "Carlos",
+    "photo": "photos/contestant-083.jpg"
+  },
+  {
+    "id": "contestant-084",
+    "name": "Liam",
+    "photo": "photos/contestant-084.jpg"
+  },
+  {
+    "id": "contestant-085",
+    "name": "Luis",
+    "photo": "photos/contestant-085.jpg"
+  },
+  {
+    "id": "contestant-086",
+    "name": "Yasmin",
+    "photo": "photos/contestant-086.jpg"
+  },
+  {
+    "id": "contestant-087",
+    "name": "Olivia",
+    "photo": "photos/contestant-087.jpg"
+  },
+  {
+    "id": "contestant-088",
+    "name": "BELLAMY",
+    "photo": "photos/contestant-088.jpg"
+  },
+  {
+    "id": "contestant-089",
+    "name": "Alex",
+    "photo": "photos/contestant-089.jpg"
+  },
+  {
+    "id": "contestant-090",
+    "name": "Ellie",
+    "photo": "photos/contestant-090.jpg"
+  },
+  {
+    "id": "contestant-091",
+    "name": "Kyree",
+    "photo": "photos/contestant-091.jpg"
+  },
+  {
+    "id": "contestant-092",
+    "name": "max",
+    "photo": "photos/contestant-092.jpg"
+  },
+  {
+    "id": "contestant-093",
+    "name": "Robyn",
+    "photo": "photos/contestant-093.jpg"
   }
 ]
