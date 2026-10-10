@@ -463,5 +463,35 @@
     "id": "contestant-093",
     "name": "Chris",
     "photo": "photos/contestant-093.jpg"
+  },
+  {
+    "id": "contestant-094",
+    "name": "Demetrius",
+    "photo": "photos/contestant-094.jpg"
+  },
+  {
+    "id": "contestant-095",
+    "name": "Alyssa",
+    "photo": "photos/contestant-095.jpg"
+  },
+  {
+    "id": "contestant-096",
+    "name": "Luke",
+    "photo": "photos/contestant-096.jpg"
+  },
+  {
+    "id": "contestant-097",
+    "name": "Émile (Eh-Meel)",
+    "photo": "photos/contestant-097.jpg"
+  },
+  {
+    "id": "contestant-098",
+    "name": "Joe",
+    "photo": "photos/contestant-098.jpg"
+  },
+  {
+    "id": "contestant-099",
+    "name": "Brayan",
+    "photo": "photos/contestant-099.jpg"
   }
 ]
