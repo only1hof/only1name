@@ -493,5 +493,35 @@
     "id": "contestant-099",
     "name": "Brayan",
     "photo": "photos/contestant-099.jpg"
+  },
+  {
+    "id": "contestant-100",
+    "name": "Cecelia",
+    "photo": "photos/contestant-100.jpg"
+  },
+  {
+    "id": "contestant-101",
+    "name": "Sydney",
+    "photo": "photos/contestant-101.jpg"
+  },
+  {
+    "id": "contestant-102",
+    "name": "Jake",
+    "photo": "photos/contestant-102.jpg"
+  },
+  {
+    "id": "contestant-103",
+    "name": "Jack",
+    "photo": "photos/contestant-103.jpg"
+  },
+  {
+    "id": "contestant-104",
+    "name": "Steve",
+    "photo": "photos/contestant-104.jpg"
+  },
+  {
+    "id": "contestant-105",
+    "name": "Xheik",
+    "photo": "photos/contestant-105.jpg"
   }
 ]
