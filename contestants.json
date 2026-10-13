@@ -758,5 +758,25 @@
     "id": "contestant-152",
     "name": "Ruby",
     "photo": "photos/contestant-152.jpg"
+  },
+  {
+    "id": "contestant-153",
+    "name": "Keegan",
+    "photo": "photos/contestant-153.jpg"
+  },
+  {
+    "id": "contestant-154",
+    "name": "Peaches",
+    "photo": "photos/contestant-154.jpg"
+  },
+  {
+    "id": "contestant-155",
+    "name": "Chase",
+    "photo": "photos/contestant-155.jpg"
+  },
+  {
+    "id": "contestant-156",
+    "name": "Chaz",
+    "photo": "photos/contestant-156.jpg"
   }
 ]
