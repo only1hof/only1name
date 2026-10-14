@@ -1031,32 +1031,52 @@
   },
   {
     "id": "contestant-207",
-    "name": "Chuck",
+    "name": "Xander",
     "photo": "photos/contestant-207.jpg"
   },
   {
     "id": "contestant-208",
-    "name": "Xander",
+    "name": "Zachary",
     "photo": "photos/contestant-208.jpg"
   },
   {
     "id": "contestant-209",
-    "name": "Zachary",
+    "name": "Nicholas",
     "photo": "photos/contestant-209.jpg"
   },
   {
     "id": "contestant-210",
-    "name": "Nicholas",
+    "name": "Brynson",
     "photo": "photos/contestant-210.jpg"
   },
   {
     "id": "contestant-211",
-    "name": "Brynson",
+    "name": "Travis",
     "photo": "photos/contestant-211.jpg"
   },
   {
     "id": "contestant-212",
-    "name": "Travis",
+    "name": "Noah",
     "photo": "photos/contestant-212.jpg"
+  },
+  {
+    "id": "contestant-213",
+    "name": "Vaughn",
+    "photo": "photos/contestant-213.jpg"
+  },
+  {
+    "id": "contestant-214",
+    "name": "Ksenia",
+    "photo": "photos/contestant-214.jpg"
+  },
+  {
+    "id": "contestant-215",
+    "name": "Felix",
+    "photo": "photos/contestant-215.jpg"
+  },
+  {
+    "id": "contestant-216",
+    "name": "Arun",
+    "photo": "photos/contestant-216.jpg"
   }
 ]
