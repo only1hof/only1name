@@ -1108,5 +1108,30 @@
     "id": "contestant-222",
     "name": "Fabian",
     "photo": "photos/contestant-222.jpg"
+  },
+  {
+    "id": "contestant-223",
+    "name": "Yehor",
+    "photo": "photos/contestant-223.jpg"
+  },
+  {
+    "id": "contestant-224",
+    "name": "Felix",
+    "photo": "photos/contestant-224.jpg"
+  },
+  {
+    "id": "contestant-225",
+    "name": "Keano",
+    "photo": "photos/contestant-225.jpg"
+  },
+  {
+    "id": "contestant-226",
+    "name": "Eli",
+    "photo": "photos/contestant-226.jpg"
+  },
+  {
+    "id": "contestant-227",
+    "name": "Breanna",
+    "photo": "photos/contestant-227.jpg"
   }
 ]
