@@ -173,8 +173,7 @@
 
     // Display levels in reverse order without changing their indices.
     levels.forEach((level, index) => {
-      const displayNumber = levels.length - index;
-
+      const displayNumber = index + 1;
       const completed = isLevelComplete(index);
 
       const card = document.createElement("button");
