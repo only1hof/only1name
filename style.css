@@ -207,6 +207,26 @@ button:focus-visible {
   color: var(--white);
 }
 
+/* Completed levels are dark */
+.level-card.completed {
+  background: #7b7b7b;
+  color: var(--white);
+  border-color: #7b7b7b;
+}
+
+/* Keep completed levels dark on hover */
+.level-card.completed:hover {
+  background: #7b7b7b;
+  color: var(--white);
+  border-color: #7b7b7b;
+}
+
+/* Check mark */
+.level-card.completed .level-check {
+  background: var(--white);
+  color: #7b7b7b;
+}
+
 .level-card:active {
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0 var(--black);

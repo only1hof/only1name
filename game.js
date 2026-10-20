@@ -168,66 +168,40 @@
 
 
   function renderLevels() {
-    const levelsGrid =
-      $("levels-grid");
-
-
+    const levelsGrid = $("levels-grid");
     levelsGrid.innerHTML = "";
 
+    // Display levels in reverse order without changing their indices.
+    levels.forEach((level, index) => {
+      const displayNumber = levels.length - index;
 
-    levels.forEach(
-      (level, index) => {
+      const completed = isLevelComplete(index);
 
-        const completed =
-          isLevelComplete(index);
+      const card = document.createElement("button");
+      card.type = "button";
 
+      card.className = `level-card ${
+        completed ? "completed" : ""
+      }`;
 
-        const card =
-          document.createElement(
-            "button"
-          );
+      card.innerHTML = `
+        <span class="level-number">
+          ${displayNumber}
+        </span>
 
+        ${
+          completed
+            ? `<span class="level-check">✓</span>`
+            : ""
+        }
+      `;
 
-        card.type = "button";
+      card.addEventListener("click", () => {
+        startLevel(index);
+      });
 
-
-        card.className =
-          `level-card ${
-            completed
-              ? "completed"
-              : ""
-          }`;
-
-
-        card.innerHTML = `
-          <span class="level-number">
-            ${index + 1}
-          </span>
-
-          ${
-            completed
-              ? `
-                <span class="level-check">
-                  ✓
-                </span>
-              `
-              : ""
-          }
-        `;
-
-
-        card.addEventListener(
-          "click",
-          () => {
-            startLevel(index);
-          }
-        );
-
-
-        levelsGrid.appendChild(card);
-      }
-    );
-
+      levelsGrid.prepend(card);
+    });
 
     updateHomeProgress();
   }
