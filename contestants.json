@@ -1888,5 +1888,20 @@
     "id": "contestant-378",
     "name": "Timmy",
     "photo": "photos/contestant-378.jpg"
+  },
+  {
+    "id": "contestant-379",
+    "name": "Eric",
+    "photo": "photos/contestant-379.jpg"
+  },
+  {
+    "id": "contestant-380",
+    "name": "Max",
+    "photo": "photos/contestant-380.jpg"
+  },
+  {
+    "id": "contestant-381",
+    "name": "Zaid",
+    "photo": "photos/contestant-381.jpg"
   }
 ]
